@@ -125,7 +125,7 @@ class UserKoperasiController extends Controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/x-www-form-urlencoded',
-                'Authorization: Bearer 102d8310b9f5f86aaa3b3000fa22e5b4',
+                'Authorization: Bearer 5d766c57aa881a778b08cb42f75df1fb',
                 'Accept: application/json')
             );
             $result = curl_exec($ch);

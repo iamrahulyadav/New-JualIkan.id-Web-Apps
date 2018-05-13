@@ -12,7 +12,7 @@
 
         //do something when right
         $user_full_name = $_POST['full_name'];
-        $user_image = "images/user_default.png";
+        $user_image = "frontend/web/img/user_default.png";
         $user_phone = $_POST['phone'];
         $user_email = $_POST['email'];
         $user_password = $_POST['password'];

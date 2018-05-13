@@ -29,6 +29,42 @@ function getDistributionAll(){
   });
 }
 
+function getKabehOrder(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : "http://localhost/jualikan.id/backend/web/api/getAllOrder2.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
+function getDetailOrder(id){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : "http://localhost/jualikan.id/backend/web/api/getAllOrder3.php?id="+id,
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
 function getKoperasi(){
   $.ajax({
     type  : "GET",
@@ -150,6 +186,72 @@ function initialize() {
           }
       })(marker, i));
   }
+}
+
+function initializeOrderMaps() {
+  var centerCoordinates = new google.maps.LatLng(-7.2807707,112.5881513);
+  var mapOptions = {
+      mapTypeId: 'roadmap',
+      center: centerCoordinates,
+      zoom: 10
+  };
+
+  // Display a map on the page
+  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+  // Display multiple markers on a map
+  var infoWindow = new google.maps.InfoWindow(), marker, i;
+  var bounds = new google.maps.LatLngBounds();
+
+  // Loop through our array of markers & place each one on the map
+  var imageGreenOrder = "http://localhost/jualikan.id/frontend/web/img/order_green_marker.png";
+  var imageOrangeOrder = "http://localhost/jualikan.id/frontend/web/img/order_orange_marker.png";
+  var imageBlueOrder = "http://localhost/jualikan.id/frontend/web/img/order_blue_marker.png";
+  var imageRedOrder = "http://localhost/jualikan.id/frontend/web/img/order_red_marker.png";
+  // console.log(image);
+
+  var icons = {
+      0 : {
+          icon: imageOrangeOrder
+      },
+      1 : {
+          icon: imageBlueOrder
+      },
+      2 : {
+          icon: imageBlueOrder
+      },
+      3 : {
+          icon: imageGreenOrder
+      },
+      5 : {
+          icon: imageRedOrder
+      }
+  };
+
+  for( i = 0; i < markers.length; i++ ) {
+      // console.log(markers[1]);
+      var position = new google.maps.LatLng(markers[i][0], markers[i][1]);
+      // bounds.extend(position);
+      marker = new google.maps.Marker({
+          position: position,
+          map: map,
+          icon: icons[markerStats[i]].icon
+          // icon: imageCompany
+          // title: markers[i][0]
+      });
+
+      bounds.extend(marker.position);
+
+      // Allow each marker to have an info window
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+              infoWindow.setContent("<b>" + contentDialog[i][0] + "</b><br/>" + contentDialog[i][1]);
+              infoWindow.open(map, marker);
+          }
+      })(marker, i));
+  }
+
+  map.fitBounds(bounds);
 }
 
 

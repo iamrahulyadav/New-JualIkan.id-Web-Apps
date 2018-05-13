@@ -38,19 +38,38 @@
               $fish_size_id = $row1['fish_size_name'];
           }
 
-            $fish = array(
-                'fish_id' => $row['fish_id'],
-                'fish_image' => $row['fish_image'],
-                'fish_name' => $row['fish_name'],
-                'fish_price' => $row['fish_price'],
-                'fish_distribution_location' => $row['fish_distribution_location'],
-                'fish_category_id' => $fish_category_id,
-                'fish_condition_id' => $fish_condition_id,
-                'fish_size_id' => $fish_size_id,
-                'fish_stock' => $row['fish_stock'],
-                'fish_description' => $row['fish_description'],
-                'fish_date' => $row['fish_date'],
-            );
+          //fish rating
+          $rating = 0;
+          $total_rating = 0;
+          $reviews = array();
+          $sql1 = "SELECT review.*, user.* FROM fish_review as review, user_pengguna as user WHERE review.fish_id = '$fish_id' and user.user_id = review.user_id";
+          $result1 = $connect->query($sql1);
+          while ($row1 = $result1->fetch_assoc()) {
+            $total_rating++;
+            $rating = (int)$rating + (int)$row1["review_jumalh"];
+            $reviews[] = $row1;
+          }
+
+          if ($total_rating != 0) {
+              $rating = $rating/$total_rating;
+          }
+
+          $fish = array(
+              'fish_id' => $row['fish_id'],
+              'fish_image' => $row['fish_image'],
+              'fish_name' => $row['fish_name'],
+              'fish_price' => $row['fish_price'],
+              'fish_koperasi_id' => $row['fish_koperasi_id'],
+              'fish_category_id' => $fish_category_id,
+              'fish_condition_id' => $fish_condition_id,
+              'fish_size_id' => $fish_size_id,
+              'fish_stock' => $row['fish_stock'],
+              'fish_rating' => (int)$rating,
+              'fish_total_rating' => $total_rating,
+              'fish_description' => $row['fish_description'],
+              'fish_date' => $row['fish_date'],
+              'fish_review' => $reviews,
+          );
         }
 
         $response['response'] = 200;

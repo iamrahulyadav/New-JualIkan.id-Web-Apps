@@ -2,8 +2,9 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use kartik\rating\StarRating;
 use frontend\models\UserKoperasi;
+use common\models\FishReview;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -13,6 +14,7 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Daftar Ikan';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="fish-index">
 
     <!-- <h1><?= Html::encode($this->title) ?></h1> -->
@@ -69,6 +71,55 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'fish_stock',
                 'value' => function ($data){
                     return $data['fish_stock']  . " ekor";
+                },
+            ],
+            [
+                'attribute'=>'Rating',
+                'format' => 'html',
+                'value' => function ($data){
+                    $object  = FishReview::find()->where(['fish_id' => $data['fish_id']])->all();
+                    $item = 0;
+                    foreach ($object as $value) {
+                        $item = $value['review_jumalh'] + $item;
+                    }
+                    if (count($object) != 0) {
+                        $total = $item/count($object);
+                    }else {
+                        $total = 0;
+                    }
+                    if (count($object) == 0) {
+                        return "Belum ada review";
+                    }else if ($total > 0 && $total <= 1) {
+                        return '<span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>' . " ($total.0)";
+                    }else if ($total > 1 && $total <= 2) {
+                        return '<span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>'. " ($total.0)";
+                    }else if ($total > 2 && $total <= 3) {
+                        return '<span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>'. " ($total.0)";
+                    }else if ($total > 3 && $total <= 4) {
+                        return '<span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star "></span>' . " ($total.0)";
+                    }else if ($total > 4 && $total <= 5) {
+                        return '<span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>
+                                <span class="fa fa-star text-warning"></span>' . " ($total.0)" ;
+                    }
                 },
             ],
             // 'fish_category_id',
