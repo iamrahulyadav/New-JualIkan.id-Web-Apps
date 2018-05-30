@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+
 /**
  * OrderController implements the CRUD actions for Order model.
  */
@@ -35,12 +38,85 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
+        date_default_timezone_set('Asia/Jakarta');
+        $date = Date('Y-m-d');
+        $query = new Query;
+        $query
+              ->from('`order` c')
+              ->orderBy(['c.order_date' => SORT_ASC]);
+
+        // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
+        $count = count($query);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $provider,
+        ]);
+    }
+
+    public function actionHariini()
+    {
+        $date = Date('Y-m-d');
+        $query = new Query;
+        $query
+              ->from('`order`')
+              ->andFilterWhere(['like', 'order_date',$date])
+              ->orderBy(['order_date' => SORT_ASC]);
+
+        // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
+        $count = count($query);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $searchModel = new OrderSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('hariini', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $provider,
+            'jumlah' => $count,
+        ]);
+    }
+
+    public function actionBulanini()
+    {
+        $month = Date('m');
+        $last  = date('t');
+
+        $firstDate = Date('Y-'. $month . '-1');
+        $lastDate = Date('Y-'. $month . '-' . $last);
+
+        $query = Order::find()->where(['between', 'order_date', $firstDate, $lastDate]);
+        $count = count($query);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $searchModel = new OrderSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('bulanini', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $provider,
         ]);
     }
 
@@ -61,6 +137,14 @@ class OrderController extends Controller
     {
         $model = Order::find()->All();
         return $this->render('generate', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionGenerate2()
+    {
+        $model = Order::find()->All();
+        return $this->render('generate2', [
             'model' => $model,
         ]);
     }

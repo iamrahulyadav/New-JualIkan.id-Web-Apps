@@ -1,5 +1,5 @@
 <?php
-    include 'connect.php';
+    include '../connect.php';
 
     $id_koperasi = 4;
 
@@ -21,6 +21,9 @@
     //ke-1 adalah nama_driver,
     //ke-1 adalah muatan_driver,
     $arrayDriver = array();
+
+    //array jarak idnex
+    $arrayJarak = array();
 
     // fetch data koperasi
     $koperasi = koperasi($id_koperasi);
@@ -157,20 +160,20 @@
 <?php
 
     function koperasi($id){
-        include 'connect.php';
+        include '../connect.php';
         $sql = "SELECT * FROM user_koperasi WHERE koperasi_id = '$id'";
         $result = $connect->query($sql);
         return $result->fetch_assoc();
     }
 
     function driver($id){
-        include 'connect.php';
+        include '../connect.php';
         $sql = "SELECT * FROM user_driver WHERE driver_koperasi_id = '$id'";
         return $connect->query($sql);
     }
 
     function pesanan($id){
-        include 'connect.php';
+        include '../connect.php';
         $sql = "SELECT * FROM order_example";
         return $connect->query($sql);
     }
@@ -488,7 +491,6 @@
             $indexDriver = 0;
 
             while ($indexDriver < count($arrayDriver)){
-
                 $driverWeight = $arrayDriver[$indexDriver][2];
 
                 $route = array();
@@ -568,24 +570,26 @@
                     }
                 }
 
-                $object['route'] = $arrayPemesanan[$index][0] . " -> 0";
-                $object['distance'] = countDistance($arrayPemesanan[$index][1], $arrayPemesanan[$index][2], $arrayPemesanan[0][1], $arrayPemesanan[0][2]);
-                $object['weight'] = 0;
-                $route[] = $object;
+                if ($index != 0) {
+                    $object['route'] = $arrayPemesanan[$index][0] . " -> 0";
+                    $object['distance'] = countDistance($arrayPemesanan[$index][1], $arrayPemesanan[$index][2], $arrayPemesanan[0][1], $arrayPemesanan[0][2]);
+                    $object['weight'] = 0;
+                    $route[] = $object;
 
-                $routeAll[] = 0;
+                    $routeAll[] = 0;
 
-                $result_item  = array();
-                $result_item['id_order'] = $idPemesanan;
-                $result_item['route_all'] = $routeAll;
-                $result_item['total_route'] = $total_route;
-                $result_item['total_weight'] = $total_berat;
+                    $result_item  = array();
+                    $result_item['id_order'] = $idPemesanan;
+                    $result_item['route_all'] = $routeAll;
+                    $result_item['total_route'] = $total_route;
+                    $result_item['total_weight'] = $total_berat;
 
-                $result_item['driver'] = $driver_info;
+                    $result_item['driver'] = $driver_info;
 
-                $result_item['route_item'] = $route;
+                    $result_item['route_item'] = $route;
 
-                $result[] = $result_item;
+                    $result[] = $result_item;
+                }
 
                 if (count($choosen) > count($arrayPemesanan) - 1) {
                     if ($indexDriver == count($arrayDriver)) {
@@ -596,8 +600,6 @@
                 }
             }
         }
-
-        // echo json_encode($result);
         return $result;
     }
 
@@ -614,7 +616,6 @@
             $indexDriver = 0;
 
             while ($indexDriver < count($arrayDriver)){
-
                 $driverWeight = $arrayDriver[$indexDriver][2];
 
                 $route = array();
@@ -669,7 +670,6 @@
 
                     //check apakah berat pesanan tersebut tidak melebihi dari berat driver
                     if ($searchIndex != 0) {
-
                         $object['route'] = $arrayPemesanan[$index][0] . " -> " . $arrayPemesanan[$searchIndex][0];
                         $object['distance'] = $dis;
                         $object['weight'] = $arrayPemesanan[$searchIndex][3];
@@ -715,7 +715,7 @@
 
                 $result[] = $result_item;
 
-                if (count($choosen) < count($arrayPemesanan) - 1) {
+                if (count($choosen) > count($arrayPemesanan) - 1) {
                     if ($indexDriver == count($arrayDriver)) {
                         $indexDriver = 0;
                     }
@@ -926,5 +926,18 @@
 
         // echo json_encode($arrayTemp);
         return $arrayTemp;
+    }
+
+    function getDirection($latFirst, $lngFirst, $latLast, $lngLast){
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, "https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyBoFfYEuwzXaVwF07dt30KvYZM9vJXUGb0&origin=-".$latFirst.",".$lngFirst."&destination=-".$latLast.",".$lngLast."&sensor=true&mode=driving" );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec( $ch );
+        echo $result;
+        curl_close( $ch );
     }
 ?>

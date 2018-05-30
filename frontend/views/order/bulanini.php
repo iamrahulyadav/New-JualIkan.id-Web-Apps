@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
-      getKabehOrder();
+      getOrderBulanIni();
     </script>
 
 </div>

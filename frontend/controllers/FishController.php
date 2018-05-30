@@ -11,6 +11,10 @@ use yii\filters\VerbFilter;
 use frontend\models\UserKoperasi;
 use yii\web\UploadedFile;
 
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+
+
 /**
  * FishController implements the CRUD actions for Fish model.
  */
@@ -43,6 +47,35 @@ class FishController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTerlaris()
+    {
+        $searchModel = new FishSearch();
+
+        $query = new Query;
+        $query->select(['f.fish_id as fish_id', 'f.fish_price as fish_price', 'f.fish_koperasi_id as fish_koperasi_id', 'f.fish_name as fish_name', 'f.fish_image as fish_image', 'SUM(c.cart_fish_qty) as fish_qty'])
+              ->from('cart c')
+              ->join('LEFT JOIN', 'fish f', 'f.fish_id = c.cart_fish_id')
+              ->where(['c.cart_status' => 1])
+              ->limit(10)
+              ->groupBy('c.cart_fish_id', 'c.cart_fish_qty')
+              ->orderBy(['c.cart_fish_qty' => SORT_DESC]);
+
+        // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
+        $count = count($query);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $this->render('terlaris', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $provider,
         ]);
     }
 

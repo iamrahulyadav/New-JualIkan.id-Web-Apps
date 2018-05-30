@@ -47,6 +47,42 @@ function getKabehOrder(){
   });
 }
 
+function getOrderHariIni(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : "http://localhost/jualikan.id/backend/web/api/getOrderHariIni.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
+function getOrderBulanIni(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : "http://localhost/jualikan.id/backend/web/api/getOrderBulanIni.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
 function getDetailOrder(id){
   $.ajax({
     type  : "GET",
@@ -149,6 +185,8 @@ function initialize() {
   // Display a map on the page
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
+
+
   // Display multiple markers on a map
   var infoWindow = new google.maps.InfoWindow(), marker, i;
 
@@ -198,6 +236,11 @@ function initializeOrderMaps() {
 
   // Display a map on the page
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+  if (markers.length == 0) {
+      document.getElementById("map_canvas").style.height = "0px";
+      document.getElementById("map_canvas").style.marginTop = "0px";
+  }
 
   // Display multiple markers on a map
   var infoWindow = new google.maps.InfoWindow(), marker, i;

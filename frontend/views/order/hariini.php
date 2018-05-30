@@ -7,6 +7,8 @@ use frontend\models\UserKoperasi;
 use common\models\UserPengguna;
 use common\models\Order;
 use yii\helpers\ArrayHelper;
+use yii\db\Query;
+
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,6 +19,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="order-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+
+
+    <?php
+    if ($jumlah != 0) {
+    ?>
+      <p><?= Html::a('Generate Order', ['generate'], ['class' => 'btn btn-success']) ?></p>
+    <?php
+    }
+    ?>
+
 
     <?php
         $Object = UserKoperasi::find()->all();
@@ -149,7 +162,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
-      getKabehOrder();
+      getOrderHariIni();
     </script>
 
 </div>

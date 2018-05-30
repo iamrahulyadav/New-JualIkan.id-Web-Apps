@@ -30,10 +30,21 @@ $fish = Fish::find()->where(['fish_koperasi_id' => $koperasiId])->all();
 $delivery = Delivery::find()->where(['delivery_order_koperasi_id' => $koperasiId])->all();
 $nelayan = UserNelayan::find()->where(['nelayan_cooperative_id' => $koperasiId])->all();
 
+$driver = UserDriver::find()->all();
 
 $pinjaman = KoperasiPinjaman::find()->all();
 $simpanan = KoperasiSimpanan::find()->all();
-$driver = UserDriver::find()->all();
+
+$totPinjaman = 0;
+$totSimpanan = 0;
+
+for($i = 0; $i < count($pinjaman); $i++){
+    $totPinjaman = $totPinjaman + $pinjaman[$i]['pinjaman_jumlah'];
+}
+
+for($i = 0; $i < count($pinjaman); $i++){
+    $totSimpanan = $totSimpanan + $simpanan[$i]['simpanan_jumlah'];
+}
 
 $this->title = 'Koperasi Jualikan.id';
 ?>
@@ -41,8 +52,10 @@ $this->title = 'Koperasi Jualikan.id';
 <script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/Chart.js"></script>
 <script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/graph/order-and-delivery.js"></script>
+<script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/graph/simpan-dan-pinjam.js"></script>
 <script type="text/javascript">
   displayDelivery(<?php echo $koperasiId; ?>);
+  displaySimpanPinjam(<?php echo $koperasiId; ?>);
 </script>
 
 
@@ -135,10 +148,10 @@ $this->title = 'Koperasi Jualikan.id';
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>
-                        <?php echo count($fish);?>
+                    <h3 style="font-size:32px;">
+                        Rp. <?php echo $totPinjaman ?>
                     </h3>
-                    <p>Stok Ikan Anda</p>
+                    <p>Peminjaman Bulan Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-sticky-note"></i>
@@ -151,10 +164,10 @@ $this->title = 'Koperasi Jualikan.id';
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>
-                        <?php echo count($order);?>
+                    <h3 style="font-size:32px;">
+                        Rp. <?php echo $totSimpanan ?>
                     </h3>
-                    <p>Order Bulan Ini</p>
+                    <p>Simpanan Bulan Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fa   fa-truck"></i>
@@ -165,25 +178,9 @@ $this->title = 'Koperasi Jualikan.id';
             </div>
         </div>
         <div class="col-lg-3 col-xs-6">
-            <div class="small-box bg-red">
-                <div class="inner">
-                    <h3>
-                        <?php echo count($driver);?>
-                    </h3>
-                    <p>Jumlah Driver Anda</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-users"></i>
-                </div>
-                <a href="http://localhost/papward/web/spbu" class="small-box-footer">More info
-                    <i class="fa fa-arrow-circle-right"></i>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>
+                    <h3 style="font-size:32px;">
                         <?php echo count($nelayan)?>
                     </h3>
                     <p>Jumlah Nelayan Anda</p>
@@ -195,15 +192,40 @@ $this->title = 'Koperasi Jualikan.id';
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
+
+        </div>
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3 style="font-size:32px;">
+                        <?php echo count($driver);?>
+                    </h3>
+                    <p>Jumlah Review</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa fa-star"></i>
+                </div>
+                <a href="http://localhost/papward/web/spbu" class="small-box-footer">More info
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
         </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-xs-12">
+          <h3>Grafik simpanan dan pinjaman koperasi bulan ini</h3>
+          <div class="row" style="margin:8px;">
+              <canvas id="simpanPinjamChart" height="350"></canvas>
+          </div>
+      </div>
+    </div>
+    <!--
     <div class="jumbotron">
         <h1>Dashboard</h1>
-
         <p class="lead">Tingkatkan kulitas koperaasimu, dengan bergabung pada Koperasi Jualikan.id.</p>
-
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+    </div> -->
 
     </div>
 </div>
