@@ -25,48 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
       $date = date("Y-m-d H:i:s");
     ?>
 
-    <?php
-    if ($model->order_status == 0) {
-        if ($model->order_date < $date) {
-            ?>
-            <div class='timer' style="margin-bottom:12px;">
-                <time class="btn btn-danger">Order expired</time>
-            </div>
-            <?php
-            $model->order_status = 5;
-            $model->save();
-        }else {
-          ?>
-          <div class='timer' style="margin-bottom:12px;">
-              <time id='countdown' class="btn btn-success">Order time remaining = 00:00</time>
-          </div>
-    <?php
-        }
-    ?>
-
-    <?php
-  }else if ($model->order_status != 3 && $model->order_status != 5 && $model->order_status != 0) {
-        //order sama dengan satu dan dua
-    ?>
-        <div class='timer' style="margin-bottom:12px;">
-            <time class="btn btn-primary">Order dalam proses</time>
-        </div>
-    <?php
-  }else if($model->order_status == 3){
-        //oder sama dengan tiga
-    ?>
-        <div class='timer' style="margin-bottom:12px;">
-            <time class="btn btn-success">Order Selesai</time>
-        </div>
-    <?php
-  }else{
-    ?>
-      <div class='timer' style="margin-bottom:12px;">
-          <time class="btn btn-danger">Order expired</time>
-      </div>
-    <?php
-  }
-    ?>
+    
 
     <p>
         <?php if ($model->order_payment_type_id == 2): ?>

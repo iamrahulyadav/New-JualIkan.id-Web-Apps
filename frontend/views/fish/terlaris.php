@@ -6,6 +6,8 @@ use kartik\rating\StarRating;
 use frontend\models\UserKoperasi;
 use common\models\FishReview;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\FishSearch */
@@ -135,8 +137,46 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'fish_description:ntext',
             // 'fish_date',
+            [
+                'header' => 'Actions',
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{update}{delete}',
+                'buttons' => [
+                    'delete' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                    'title' => Yii::t('app', 'Delete'),
+                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete?'),
+                                    'data-method' => 'post', 'data-pjax' => '0',
+                        ]);
+                    },
+                    'update' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => Yii::t('app', 'Update')
+                        ]);
+                    },
+                    'view' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    'title' => Yii::t('app', 'View')
+                        ]);
+                    }
+                ],
+                'urlCreator' => function ($action, $data) {
+                    if ($action === 'delete') {
+                        $url = Url::to(['fish/delete', 'id' => $data['fish_id']]);
+                        return $url;
+                    }
+                    if ($action === 'update') {
+                        $url = Url::to(['fish/update', 'id' => $data['fish_id']]);
+                        return $url;
+                    }
+                    if ($action === 'view') {
+                        $url = Url::to(['fish/view', 'id' => $data['fish_id']]);
+                        return $url;
+                    }
+                }
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

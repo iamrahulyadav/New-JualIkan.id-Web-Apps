@@ -8,7 +8,7 @@
       //do something when right
       $delivery_id = $_GET['delivery_id'];
 
-      $query = "SELECT * FROM delivery WHERE delivery_id = '$delivery_id'";
+      $query = "SELECT delivery.*, user_koperasi.* FROM delivery as delivery, user_koperasi as user_koperasi WHERE delivery_id = '$delivery_id' and user_koperasi.koperasi_id = delivery.delivery_order_koperasi_id";
       $result = $connect->query($query);
       $row = $result->fetch_assoc();
       $objDelivery = array();
@@ -62,7 +62,7 @@
           $lokasi['lokasi_lat'] = $row2['order_location_lat'];
           $lokasi['lokasi_lng'] = $row2['order_location_lng'];
 
-          $objOrder['id'] = "JD-" . $row2['order_id'];
+          $objOrder['id'] = "Order JD-" . $row2['order_id'];
           $objOrder['user'] = $user;
           $objOrder['cart']['items'] = $cart;
           $objOrder['cart']['total'] = $total;
@@ -71,17 +71,78 @@
           $orders[] = $objOrder;
       }
 
+      $koperasi['id'] = $row['koperasi_id'];
+      $koperasi['name'] = $row['koperasi_name'];
+      $koperasi['address'] = $row['koperasi_address'];
+      $koperasi['lat'] = $row['koperasi_lat'];
+      $koperasi['lng'] = $row['koperasi_lng'];
 
+      $objDelivery['id'] = (int)$row['delivery_id'];
+      $objDelivery['code'] = "Pengiriman ID-" . $row['delivery_code'];
       $objDelivery['orders'] = $orders;
+      $objDelivery['koperasi'] = $koperasi;
 
-      echo json_encode($objDelivery, JSON_PRETTY_PRINT);
+      $time['value'] = (int)$row['delivery_travel_time'];
+      $time['text'] = timeFormat($row['delivery_travel_time']);
 
+      $distance['value'] = (int)$row['delivery_travel_distance'];
+      $distance['text'] = distanceFormat($row['delivery_travel_distance']);
 
+      $biaya['value'] = (int)$row['delivery_payment'];
+      $biaya['text'] = biayaFormat($row['delivery_payment']);
+
+      $objDelivery['time'] = $time;
+      $objDelivery['distance'] = $distance;
+      $objDelivery['biaya'] = $biaya;
+      $objDelivery['status'] = (int) $row['delivery_status'];
+
+      $response['response'] = 200;
+      $response['status'] = true;
+      $response['message'] = "Data berhasil di ambil";
+      $response['data'] = $objDelivery;
+
+      echo json_encode($response, JSON_PRETTY_PRINT);
   }else {
 
       //do something when false
       $response['response'] = 400;
       $response['status'] = false;
       $response['message'] = "Pastikan parameter anda terisi";
+
+      echo json_encode($response, JSON_PRETTY_PRINT);
+  }
+
+  function timeFormat($seconds){
+      $hours = floor($seconds / 3600);
+      $mins = floor($seconds / 60 % 60);
+      $secs = floor($seconds % 60);
+
+      if ($hours != 0) {
+          if ($menit != 0) {
+              return $hours . " Jam " . $mins . " Menit";
+          }else {
+              return $hours . " Jam";
+          }
+      }else {
+          if ($mins != 0) {
+              return $mins . " Menit";
+          }else {
+              return $secs . " Detik";
+          }
+      }
+  }
+
+  function distanceFormat($seconds){
+      $km = floor($seconds / 1000);
+      $rm = floor($seconds / 100 % 10);
+
+      return $km . "," . $rm . " KM";
+  }
+
+  function biayaFormat($seconds){
+      $km = floor($seconds / 1000);
+      $rm = floor($seconds % 1000);
+
+      return "Rp. " . $km . "." . $rm;
   }
 ?>

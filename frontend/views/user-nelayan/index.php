@@ -31,14 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'nelayan_image',
                 'format' => 'html',
                 'value' => function ($data){
-                    return Html::img(Yii::$app->request->baseUrl . '/'. $data['nelayan_image'], ['width' => '120px','height' => '75px']);
+                    return Html::img(Yii::$app->request->baseUrl . '/'. $data['nelayan_image'], ['width' => '100%','height' => '75px']);
                 },
                 'headerOptions' => ['style' => 'width:130px;'],
             ],
             'nelayan_full_name',
             'nelayan_phone',
             // 'nelayan_cooperative_id',
-            'nelayan_address:ntext',
+            // [
+            //     'attribute'=>'nelayan_address',
+            //     'format' => 'html',
+            //     'value' => function ($data){
+            //         return $data['nelayan_image'];
+            //     },
+            //     'headerOptions' => ['style' => 'width:130px;'],
+            // ],
             // 'nelayan_saldo',
             [
                 'attribute'=>'nelayan_saldo',

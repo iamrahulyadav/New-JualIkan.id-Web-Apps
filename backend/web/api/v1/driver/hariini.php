@@ -7,10 +7,9 @@ use frontend\models\UserKoperasi;
 use common\models\UserPengguna;
 use common\models\Order;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
+use yii\db\Query;
 
 /* @var $this yii\web\View */
-
 /* @var $searchModel frontend\models\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -20,6 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="order-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?php
+    if ($jumlah != 0) {
+    ?>
+    <p><?= Html::a('Generate Order', ['generate2'], ['class' => 'btn btn-success']) ?></p>
+    <?php
+    }
+    ?>
+
 
     <?php
         $Object = UserKoperasi::find()->all();
@@ -143,45 +151,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'order_payment_total',
             //'order_delivery_time_id:datetime',
             //'order_status',
-            [
-                'header' => 'Actions',
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{update}{delete}',
-                'buttons' => [
-                    'delete' => function ($url) {
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                    'title' => Yii::t('app', 'Delete'),
-                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete?'),
-                                    'data-method' => 'post', 'data-pjax' => '0',
-                        ]);
-                    },
-                    'update' => function ($url) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                    'title' => Yii::t('app', 'Update')
-                        ]);
-                    },
-                    'view' => function ($url) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                    'title' => Yii::t('app', 'View')
-                        ]);
-                    }
-                ],
-                'urlCreator' => function ($action, $data) {
-                    if ($action === 'delete') {
-                        $url = Url::to(['order/delete', 'id' => $data['order_id']]);
-                        return $url;
-                    }
-                    if ($action === 'update') {
-                        $url = Url::to(['order/update', 'id' => $data['order_id']]);
-                        return $url;
-                    }
-                    if ($action === 'view') {
-                        $url = Url::to(['order/view', 'id' => $data['order_id']]);
-                        return $url;
-                    }
-                }
-            ],
-            // ['class' => 'yii\grid\ActionColumn'],
+
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
@@ -189,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
-      getKabehOrder();
+      getOrderHariIni();
     </script>
 
 </div>

@@ -4,7 +4,7 @@
   $month = Date('m');
   $last  = date('t');
 
-  $date_first = date('Y-m-1 H:m:s');
+  $date_first = date('Y-m-1 00:00:00');
   $date_last = date('Y-m-'. $last . ' H:m:s');
 
   $sql = "SELECT pesanan.*, user.*

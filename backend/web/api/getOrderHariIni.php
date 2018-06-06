@@ -1,6 +1,7 @@
 <?php
   include 'connect.php';
 
+  date_default_timezone_set('Asia/Jakarta');
   $date = date('Y-m-d');
 
   $sql = "SELECT pesanan.*, user.*

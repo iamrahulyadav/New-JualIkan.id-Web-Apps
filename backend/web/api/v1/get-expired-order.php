@@ -8,7 +8,7 @@
         $order_list = array();
 
         $id_user = $_POST['id_user'];
-        $sql = "SELECT * FROM `order` WHERE `order_user_id` = '$id_user' and order_status = '5' or order_status = '3'";
+        $sql = "SELECT * FROM `order` WHERE (order_status = '5' or order_status = '3') and (`order_user_id` = '$id_user')";
         $result = $connect->query($sql);
 
         while ($row = $result->fetch_assoc()){

@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'nelayan_image',
                 'format' => 'html',
                 'value' => function ($data){
-                    return Html::img(Yii::$app->request->baseUrl . '/'. $data['nelayan_image'], ['width' => '200px','height' => '125px']);
+                    return Html::img(Yii::$app->request->baseUrl . '/'. $data['nelayan_image'], ['width' => '100%','height' => '125px']);
                 },
                 'headerOptions' => ['style' => 'width:130px;'],
             ],

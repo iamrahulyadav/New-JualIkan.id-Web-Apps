@@ -6,13 +6,13 @@
   date_default_timezone_set('Asia/Jakarta');
   $date = date('y-m-d');
 
-  $sql = "SELECT `order`.*, user_pengguna.* FROM `order` as `order`, user_pengguna as user_pengguna WHERE user_pengguna.user_id = `order`.order_user_id and `order`.order_koperasi_location_id = $id and `order`.order_date like '%$date%'";
+  $sql = "SELECT `order`.*, user_pengguna.* FROM `order` as `order`, user_pengguna as user_pengguna WHERE user_pengguna.user_id = `order`.order_user_id and `order`.order_koperasi_location_id = $id and `order`.order_date like '%$date%' and `order`.order_status = 1";
   $queryResult = $connect->query($sql);
   $resultLocation = array();
 
   $sql1 = " SELECT user_driver.*, driver_track.*
             FROM user_driver as user_driver, driver_track as driver_track
-            WHERE user_driver.driver_koperasi_id = '$id' and driver_track.driver_track_id = user_driver.driver_track_id and user_driver.driver_device_id != ''";
+            WHERE user_driver.driver_koperasi_id = '$id' and driver_track.driver_track_id = user_driver.driver_track_id and user_driver.driver_device_id != '' and user_driver.driver_status = 1";
   $queryResult1 = $connect->query($sql1);
   $resultDriver = array();
 

@@ -7,6 +7,8 @@ use frontend\models\UserKoperasi;
 use common\models\UserPengguna;
 use common\models\Order;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,6 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="order-index">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?php
+      $this->registerJsFile('@yii/assets/yii.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+    ?>
 
     <?php
         $Object = UserKoperasi::find()->all();
@@ -35,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
 
             // 'order_id',
             // 'order_cart_id:ntext',
@@ -140,8 +147,45 @@ $this->params['breadcrumbs'][] = $this->title;
             //'order_payment_total',
             //'order_delivery_time_id:datetime',
             //'order_status',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'header' => 'Actions',
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{update}{delete}',
+                'buttons' => [
+                    'delete' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                    'title' => Yii::t('app', 'Delete'),
+                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete?'),
+                                    'data-method' => 'post', 'data-pjax' => '0',
+                        ]);
+                    },
+                    'update' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => Yii::t('app', 'Update')
+                        ]);
+                    },
+                    'view' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    'title' => Yii::t('app', 'View')
+                        ]);
+                    }
+                ],
+                'urlCreator' => function ($action, $model) {
+                    if ($action === 'delete') {
+                        $url = Url::to(['order/delete', 'id' => $model->order_id]);
+                        return $url;
+                    }
+                    if ($action === 'update') {
+                        $url = Url::to(['order/update', 'id' => $model->order_id]);
+                        return $url;
+                    }
+                    if ($action === 'view') {
+                        $url = Url::to(['order/view', 'id' => $model->order_id]);
+                        return $url;
+                    }
+                }
+            ],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

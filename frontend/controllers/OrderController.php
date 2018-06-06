@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+use yii\data\SqlDataProvider;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -45,8 +46,9 @@ class OrderController extends Controller
               ->from('`order` c')
               ->orderBy(['c.order_date' => SORT_ASC]);
 
+        $count = $query->count();
+
         // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
-        $count = count($query);
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $count,
@@ -54,6 +56,7 @@ class OrderController extends Controller
                 'pageSize' => 10,
             ],
         ]);
+
 
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -66,6 +69,7 @@ class OrderController extends Controller
 
     public function actionHariini()
     {
+        date_default_timezone_set('Asia/Jakarta');
         $date = Date('Y-m-d');
         $query = new Query;
         $query
@@ -73,11 +77,33 @@ class OrderController extends Controller
               ->andFilterWhere(['like', 'order_date',$date])
               ->orderBy(['order_date' => SORT_ASC]);
 
+        $query2 = new Query;
+        $query2
+              ->from('`order`')
+              ->andFilterWhere(['like', 'order_date',$date])
+              ->andWhere(['order_status' => 1])
+              ->orderBy(['order_date' => SORT_DESC]);
+
+        $total2 = $query2->count();
+
+        $total = $query->count();
+
         // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
         $count = count($query);
+        // echo json_encode($query);
+        // echo $count;
+
+        $newProvider = new SqlDataProvider([
+          'sql' => "SELECT * FROM `order`",
+          'totalCount' => $total,
+          'pagination' => [
+              'pageSize' => 20,
+          ],
+        ]);
+
         $provider = new ActiveDataProvider([
             'query' => $query,
-            'totalCount' => $count,
+            'totalCount' => $total,
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -88,8 +114,8 @@ class OrderController extends Controller
 
         return $this->render('hariini', [
             'searchModel' => $searchModel,
-            'dataProvider' => $provider,
-            'jumlah' => $count,
+            'dataProvider' => $provider ,
+            'jumlah' => $total2,
         ]);
     }
 
@@ -101,11 +127,12 @@ class OrderController extends Controller
         $firstDate = Date('Y-'. $month . '-1');
         $lastDate = Date('Y-'. $month . '-' . $last);
 
-        $query = Order::find()->where(['between', 'order_date', $firstDate, $lastDate]);
+        $query = Order::find()->where(['between', 'order_date', $firstDate, $lastDate])->orderBy(['order_date' => SORT_DESC]);
+        $total = $query->count();
         $count = count($query);
         $provider = new ActiveDataProvider([
             'query' => $query,
-            'totalCount' => $count,
+            'totalCount' => $total,
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -137,6 +164,14 @@ class OrderController extends Controller
     {
         $model = Order::find()->All();
         return $this->render('generate', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionFinish()
+    {
+        $model = Order::find()->All();
+        return $this->render('finish', [
             'model' => $model,
         ]);
     }

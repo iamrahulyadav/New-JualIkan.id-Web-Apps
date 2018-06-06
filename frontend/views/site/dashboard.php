@@ -42,7 +42,7 @@ for($i = 0; $i < count($pinjaman); $i++){
     $totPinjaman = $totPinjaman + $pinjaman[$i]['pinjaman_jumlah'];
 }
 
-for($i = 0; $i < count($pinjaman); $i++){
+for($i = 0; $i < count($simpanan); $i++){
     $totSimpanan = $totSimpanan + $simpanan[$i]['simpanan_jumlah'];
 }
 

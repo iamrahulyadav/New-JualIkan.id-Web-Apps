@@ -6,6 +6,7 @@ use kartik\grid\GridView;
 use frontend\models\UserKoperasi;
 use common\models\UserPengguna;
 use common\models\Order;
+use common\models\DeliveryTime;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
 
@@ -20,12 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-
-
     <?php
     if ($jumlah != 0) {
     ?>
-      <p><?= Html::a('Generate Order', ['generate'], ['class' => 'btn btn-success']) ?></p>
+    <p><?= Html::a('Generate Order', ['generate2'], ['class' => 'btn btn-success']) ?></p>
     <?php
     }
     ?>
@@ -39,6 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
         $objectArray1 = ArrayHelper::map($Object1, 'user_id', 'user_full_name');
 
         $object2 = Order::find()->where(['order_status' => 1])->all();
+
+        $DeliveryTime = DeliveryTime::find()->all();
+        $arrayDeliveryTime = ArrayHelper::map($DeliveryTime, 'delivery_time_id', 'delivery_time_name');
     ?>
 
     <div id="map_canvas" class="mapping" style="margin-bottom:20px;"></div>
@@ -64,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=> $objectArray1,
                 // 'headerOptions' => ['style' => 'width:20%'],
             ],
+
             [
                 'attribute'=>'order_date',
                 'value' => function ($data){
@@ -86,6 +89,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'headerOptions' => ['style' => 'width:20%'],
             ],
             [
+                'label' => 'Waktu Pengiriman',
+                'attribute'=>'order_delivery_time_id',
+                'value' => function ($data){
+                    $object  = DeliveryTime::find()->where(['delivery_time_id' => $data['order_delivery_time_id']])->one();
+                    return $object->delivery_time_name;
+                },
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'prompt'=>'Pilih User',
+                ],
+                'filter'=> $arrayDeliveryTime,
+                // 'headerOptions' => ['style' => 'width:20%'],
+            ],
+            [
+                'label' => 'Berat Order',
                 'attribute'=>'order_weight',
                 'value' => function ($data){
                     $berat = $data['order_weight'].  " Kg";
@@ -95,6 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
+                'label' => 'Total Biaya',
                 'attribute'=>'order_payment_total',
                 'value' => function ($data){
                     $berat = "Rp. " . $data['order_payment_total'];
@@ -153,8 +172,46 @@ $this->params['breadcrumbs'][] = $this->title;
             //'order_payment_total',
             //'order_delivery_time_id:datetime',
             //'order_status',
+            [
+                'header' => 'Actions',
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{update}{delete}',
+                'buttons' => [
+                    'delete' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                    'title' => Yii::t('app', 'Delete'),
+                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete?'),
+                                    'data-method' => 'post', 'data-pjax' => '0',
+                        ]);
+                    },
+                    'update' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => Yii::t('app', 'Update')
+                        ]);
+                    },
+                    'view' => function ($url) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    'title' => Yii::t('app', 'View')
+                        ]);
+                    }
+                ],
+                'urlCreator' => function ($action, $model) {
+                    if ($action === 'delete') {
+                        $url = Url::to(['order/delete', 'id' => $model->order_id]);
+                        return $url;
+                    }
+                    if ($action === 'update') {
+                        $url = Url::to(['order/update', 'id' => $model->order_id]);
+                        return $url;
+                    }
+                    if ($action === 'view') {
+                        $url = Url::to(['order/view', 'id' => $model->order_id]);
+                        return $url;
+                    }
+                }
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

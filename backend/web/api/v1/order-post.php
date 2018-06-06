@@ -2,6 +2,7 @@
     include '../connect.php';
 
     $response = array();
+    date_default_timezone_set('Asia/Jakarta');
     $date = date("Y-m-d H:i:s");
 
     if (isset($_POST['postIdKeranjang']) &&

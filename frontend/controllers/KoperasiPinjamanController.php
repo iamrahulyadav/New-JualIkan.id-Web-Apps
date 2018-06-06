@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use backend\models\UserKoperasi;
+use common\models\UserNelayan;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -57,7 +58,7 @@ class KoperasiPinjamanController extends Controller
         $lastDate = Date('Y-'. $month . '-' . $last);
 
         $query = KoperasiPinjaman::find()->where(['between', 'pinjaman_date', $firstDate, $lastDate]);
-        $count = count($query);
+        $count = $query->count();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $count,
@@ -100,8 +101,12 @@ class KoperasiPinjamanController extends Controller
         $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
 
         if ($model->load(Yii::$app->request->post())) {
+
+            $nelayan = UserNelayan::find()->where(['nelayan_id' => $model->pinjaman_nelayan_id])->one();
+            $nelayan->nelayan_saldo = ($nelayan->nelayan_saldo) - ($model->pinjaman_jumlah);
+
             $model->pinjaman_koperasi_id = $object->koperasi_id;
-            if ($model->save()) {
+            if ($model->save() && $nelayan->save()) {
                 return $this->redirect(['view', 'id' => $model->pinjaman_id]);
             }else {
                 return $this->render('create', [

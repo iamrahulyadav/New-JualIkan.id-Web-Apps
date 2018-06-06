@@ -1,5 +1,7 @@
 <?php
 
+  $url = "http://localhost/";
+
   $id = $_GET['id'];
   // echo $id;
   $array = json_decode($id);
@@ -16,6 +18,10 @@
       include '../../connect.php';
 
       $order_id = json_encode($arrayOrderId);
+
+      for ($i=0; $i < count($arrayOrderId); $i++) {
+          updatePemesanan($arrayOrderId[$i]);
+      }
 
       //model mengambil data driver
       $driver = driver($driverId);
@@ -67,6 +73,12 @@
       return $result->fetch_assoc();
   }
 
+  function updatePemesanan($id){
+      include '../../connect.php';
+      $sql = "UPDATE `order` SET order_status = 2 WHERE order_id = '$id'";
+      $connect->query($sql);
+  }
+
   function driver($id){
       include '../../connect.php';
       $sql = "SELECT * FROM user_driver WHERE driver_id = '$id'";
@@ -75,8 +87,6 @@
   }
 
   function postNotification($jumalah_order, $driver_id, $delivery_id, $idPhone){
-      echo $idPhone;
-      echo "</br>";
       $message = $jumalah_order . " Order Siap Dikirim";
       $title = "JualIkan Driver";
 
@@ -114,6 +124,8 @@
     	curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
     	$result = curl_exec($ch );
     	curl_close( $ch );
+
+      header('Location:'."http://".$_SERVER['HTTP_HOST']."/jualikan.id/order/hariini");
   }
 
   function udpateSaldoDriver($delivery_id, $driver_id, $level, $value){

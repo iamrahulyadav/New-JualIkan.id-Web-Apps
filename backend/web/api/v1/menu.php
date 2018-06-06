@@ -4,11 +4,13 @@
     $response = array();
 
     if (isset($_POST['lat']) &&
-        isset($_POST['lng'])) {
+        isset($_POST['lng']) &&
+        isset($_POST['user_id'])) {
 
         //do something when right
         $lat = $_POST['lat'];
         $lng = $_POST['lng'];
+        $user_id = $_POST['user_id'];
 
         //id lokasi
         $id_location = 0;
@@ -98,6 +100,7 @@
         $response['data'] = array(
             'promo' => $promo,
             'fish_cat' => $fish_cat,
+            'order_total' => (int)countOrderDalamProses($user_id),
         );
 
     }else {
@@ -109,6 +112,14 @@
     }
 
     echo json_encode($response, JSON_PRETTY_PRINT);
+
+    function countOrderDalamProses($id_user){
+        include '../connect.php';
+        $sql = "SELECT count(*) as total FROM `order` WHERE (order_status = '0' or order_status = '1' or order_status = '2') and (`order_user_id` = '$id_user')";
+        $result = $connect->query($sql);
+        $data = $result->fetch_assoc();
+        return $data['total'];
+    }
 
     function countDistance($lat1, $lng1, $lat2, $lng2){
         $latFrom = deg2rad($lat1);

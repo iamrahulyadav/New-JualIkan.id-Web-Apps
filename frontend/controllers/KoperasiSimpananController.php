@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use backend\models\UserKoperasi;
+use common\models\UserNelayan;
 use yii\data\ActiveDataProvider;
 /**
  * KoperasiSimpananController implements the CRUD actions for KoperasiSimpanan model.
@@ -100,7 +101,11 @@ class KoperasiSimpananController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->simpanan_koperasi_id = $object->koperasi_id;
-            if ($model->save()) {
+
+            $nelayan = UserNelayan::find()->where(['nelayan_id' => $model->simpanan_nelayan_id])->one();
+            $nelayan->nelayan_saldo = ($nelayan->nelayan_saldo) + ($model->simpanan_jumlah);
+
+            if ($model->save() && $nelayan->save()) {
                 return $this->redirect(['view', 'id' => $model->simpanan_id]);
             }else {
                 return $this->render('create', [
@@ -125,8 +130,10 @@ class KoperasiSimpananController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->simpanan_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->simpanan_id]);
+            }
         }
 
         return $this->render('update', [
