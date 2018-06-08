@@ -18,7 +18,7 @@ class UserDriverSearch extends UserDriver
     public function rules()
     {
         return [
-            [['driver_id', 'driver_koperasi_id', 'driver_vehicle_weight', 'driver_track_id', 'driver_saldo'], 'integer'],
+            [['driver_id', 'driver_koperasi_id', 'driver_vehicle_weight', 'driver_track_id', 'driver_saldo', 'driver_status'], 'integer'],
             [['driver_full_name', 'driver_phone', 'driver_email', 'driver_password', 'driver_device_id', 'driver_image', 'driver_address'], 'safe'],
         ];
     }
@@ -64,6 +64,7 @@ class UserDriverSearch extends UserDriver
             'driver_vehicle_weight' => $this->driver_vehicle_weight,
             'driver_track_id' => $this->driver_track_id,
             'driver_saldo' => $this->driver_saldo,
+            'driver_status' => $this->driver_status,
         ]);
 
         $query->andFilterWhere(['like', 'driver_full_name', $this->driver_full_name])

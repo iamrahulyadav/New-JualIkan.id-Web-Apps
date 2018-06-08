@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models;
+namespace frontend\controllers;
 
 use Yii;
 use common\models\UserDriver;

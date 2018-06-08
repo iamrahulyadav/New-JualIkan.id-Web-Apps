@@ -25,13 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
       $date = date("Y-m-d H:i:s");
     ?>
 
-    
-
     <p>
         <?php if ($model->order_payment_type_id == 2): ?>
           <a href="<?php echo $model->order_delivery_payment_url ?>" class="btn btn-success">Payment Url</a>
         <?php endif; ?>
-        <?= Html::a('Update', ['update', 'id' => $model->order_id], ['class' => 'btn btn-primary']) ?>
+        <!-- <?= Html::a('Update', ['update', 'id' => $model->order_id], ['class' => 'btn btn-primary']) ?> -->
         <?= Html::a('Delete', ['delete', 'id' => $model->order_id], [
             'class' => 'btn btn-danger',
             'data' => [

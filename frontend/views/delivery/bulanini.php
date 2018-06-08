@@ -53,7 +53,7 @@ $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->iden
                 'attribute'=>'delivery_code',
                 'value' => function ($data){
                     $array = json_decode($data['delivery_order_id']);
-                    return Html::a(count($array) . ' Order', ['order', 'id' => $data['delivery_id']],
+                    return Html::a(count($array) . ' Order', ['view', 'id' => $data['delivery_id']],
                     [
                         'class' => 'btn btn-success',
                         'style' => 'width:100%',

@@ -51,18 +51,18 @@ class UserDriver extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'driver_id' => 'Driver ID',
-            'driver_full_name' => 'Driver Full Name',
-            'driver_phone' => 'Driver Phone',
-            'driver_email' => 'Driver Email',
-            'driver_password' => 'Driver Password',
-            'driver_device_id' => 'Driver Device ID',
-            'driver_image' => 'Driver Image',
-            'driver_koperasi_id' => 'Driver Koperasi ID',
-            'driver_vehicle_weight' => 'Driver Vehicle Weight',
-            'driver_address' => 'Driver Address',
+            'driver_id' => 'ID Driver',
+            'driver_full_name' => 'Nama Lengkap Driver',
+            'driver_phone' => 'No HP Driver',
+            'driver_email' => 'Email Driver',
+            'driver_password' => 'Password Driver',
+            'driver_device_id' => 'ID Device Driver',
+            'driver_image' => 'Foto Driver',
+            'driver_koperasi_id' => 'Lokasi Koperasi',
+            'driver_vehicle_weight' => 'Berat Kapasitas',
+            'driver_address' => 'Alamat Driver',
             'driver_track_id' => 'Driver Track ID',
-            'driver_saldo' => 'Driver Saldo',
+            'driver_saldo' => 'Saldo Driver',
         ];
     }
 }

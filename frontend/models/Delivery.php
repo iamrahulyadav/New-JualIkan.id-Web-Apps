@@ -50,18 +50,18 @@ class Delivery extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'delivery_id' => 'Delivery ID',
-            'delivery_code' => 'Delivery Code',
-            'delivery_order_id' => 'Delivery Order ID',
-            'delivery_order_koperasi_id' => 'Delivery Order Koperasi ID',
-            'delivery_driver_id' => 'Delivery Driver ID',
+            'delivery_id' => 'ID Pengiriman',
+            'delivery_code' => 'Kode Pengiriman',
+            'delivery_order_id' => 'ID Pengiriman Order',
+            'delivery_order_koperasi_id' => 'Nama Koperasi',
+            'delivery_driver_id' => 'Nama Driver',
             'delivery_driver_track_id' => 'Delivery Driver Track ID',
-            'delivery_time_depart' => 'Delivery Time Depart',
-            'delivery_time_arrival' => 'Delivery Time Arrival',
-            'delivery_travel_time' => 'Delivery Travel Time',
-            'delivery_travel_distance' => 'Delivery Travel Distance',
-            'delivery_payment' => 'Delivery Payment',
-            'delivery_status' => 'Delivery Status',
+            'delivery_time_depart' => 'Waktu Keberangkatan',
+            'delivery_time_arrival' => 'Waktu Tiba',
+            'delivery_travel_time' => 'Waktu Tempuh Pengriman',
+            'delivery_travel_distance' => 'Jarak Tempuh Pengriman',
+            'delivery_payment' => 'Biaya Pengriman',
+            'delivery_status' => 'Status Pengiriman',
         ];
     }
 }
