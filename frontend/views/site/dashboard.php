@@ -10,6 +10,7 @@ use common\models\UserNelayan;
 use backend\models\UserKoperasi;
 /* @var $this yii\web\View */
 
+$server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
 
 $koperasi = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
 $koperasiId = $koperasi->koperasi_id;
@@ -49,10 +50,10 @@ for($i = 0; $i < count($simpanan); $i++){
 $this->title = 'Koperasi Jualikan.id';
 ?>
 
-<script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/Chart.js"></script>
-<script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/graph/order-and-delivery.js"></script>
-<script type="text/javascript" src="http://localhost/jualikan.id/backend/web/js/graph/simpan-dan-pinjam.js"></script>
+<script type="text/javascript" src="<?php echo $server ?>backend/web/js/Chart.js"></script>
+<script type="text/javascript" src="<?php echo $server ?>backend/web/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $server ?>backend/web/js/graph/order-and-delivery.js"></script>
+<script type="text/javascript" src="<?php echo $server ?>backend/web/js/graph/simpan-dan-pinjam.js"></script>
 <script type="text/javascript">
   displayDelivery(<?php echo $koperasiId; ?>);
   displaySimpanPinjam(<?php echo $koperasiId; ?>);
@@ -72,7 +73,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa fa-sticky-note"></i>
                 </div>
-                <a href="http://localhost/papward/web/user-pengguna" class="small-box-footer">More info
+                <a href="<?php echo $server ?>fish/index" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -88,7 +89,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa   fa-truck"></i>
                 </div>
-                <a href="http://localhost/papward/web/bright" class="small-box-footer">More info
+                <a href="<?php echo $server ?>order/bulanini" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -104,7 +105,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa fa-truck"></i>
                 </div>
-                <a href="http://localhost/papward/web/spbu" class="small-box-footer">More info
+                <a href="<?php echo $server ?>delviery" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -120,7 +121,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa fa-users"></i>
                 </div>
-                <a href="http://localhost/papward/web/barang-bright" class="small-box-footer">More info
+                <a href="<?php echo $server ?>user-driver/index" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -156,7 +157,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa fa-sticky-note"></i>
                 </div>
-                <a href="http://localhost/papward/web/user-pengguna" class="small-box-footer">More info
+                <a href="<?php echo $server ?>koperasi-pinjaman/indexbulan" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -172,7 +173,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa   fa-truck"></i>
                 </div>
-                <a href="http://localhost/papward/web/bright" class="small-box-footer">More info
+                <a href="<?php echo $server ?>koperasi-simpanan/indexbulan" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>

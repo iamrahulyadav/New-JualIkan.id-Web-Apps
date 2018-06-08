@@ -126,8 +126,14 @@ class FishController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $model->fish_koperasi_id = $object->koperasi_id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'fish_image');
+            $model->fish_image = 'img/' . $image->baseName. '.' . $image->extension;
+            $image->saveAs($model->fish_image);
+            $model->save();
             return $this->redirect(['view', 'id' => $model->fish_id]);
         }
 

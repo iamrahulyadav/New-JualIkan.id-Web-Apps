@@ -16,6 +16,10 @@ use yii\helpers\Url;
 
 $this->title = 'Daftar Pesanan';
 $this->params['breadcrumbs'][] = $this->title;
+
+$server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
+$object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+
 ?>
 <div class="order-index">
 
@@ -98,15 +102,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Status Order',
                 'value' => function ($data){
                     if ($data['order_status'] == 0){
-                        return "<p style='color:orange;'>Belum Melakukan Pembayaran</p>".
+                        return "<p style='color:orange;'>Belum Melakukan Pembayaran</p><p>".
                         Html::a('Verifikasi Pembayaran', ['verifikasipembayaran', 'id' => $data['order_id']],
+                        [
+                            'class' => 'btn btn-success',
+                            'data' => [
+                                'confirm' => 'Apa Benar kamu akan verifikasi pembayaran ini ?',
+                                'method' => 'post',
+                            ],
+                        ])."</p>".
+                        "<p>".
+                        Html::a('Link Pembayaran', $data['order_delivery_payment_url'],
                         [
                             'class' => 'btn btn-primary',
                             'data' => [
                                 'confirm' => 'Apa Benar kamu akan verifikasi pembayaran ini ?',
                                 'method' => 'post',
                             ],
-                        ]);
+                        ])."</p>";
                     }
                     elseif ($data['order_status'] == 1){
                         return "<p style='color:#337ab7;'>Sudah Melakukan Pembayaran</p>";
@@ -146,7 +159,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'header' => 'Actions',
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{update}{delete}',
+                'template' => '{view}{delete}',
                 'buttons' => [
                     'delete' => function ($url) {
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
@@ -155,28 +168,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-method' => 'post', 'data-pjax' => '0',
                         ]);
                     },
-                    'update' => function ($url) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                    'title' => Yii::t('app', 'Update')
-                        ]);
-                    },
                     'view' => function ($url) {
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                     'title' => Yii::t('app', 'View')
                         ]);
                     }
                 ],
-                'urlCreator' => function ($action, $data) {
+                'urlCreator' => function ($action, $model) {
                     if ($action === 'delete') {
-                        $url = Url::to(['order/delete', 'id' => $data['order_id']]);
-                        return $url;
-                    }
-                    if ($action === 'update') {
-                        $url = Url::to(['order/update', 'id' => $data['order_id']]);
+                        $url = Url::to(['order/delete', 'id' => $model['order_id']]);
                         return $url;
                     }
                     if ($action === 'view') {
-                        $url = Url::to(['order/view', 'id' => $data['order_id']]);
+                        $url = Url::to(['order/view', 'id' => $model['order_id']]);
                         return $url;
                     }
                 }
@@ -187,9 +191,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initialize"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
+    <script src="<?php echo $server?>backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
-      getKabehOrder();
+      getKabehOrder("<?php echo $object->koperasi_id ?>");
     </script>
 
 </div>

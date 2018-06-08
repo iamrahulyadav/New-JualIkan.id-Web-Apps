@@ -1,9 +1,5 @@
 var map;
 
-console.log(location.host);
-
-var server = "http://" + location.host + "/jualikan.id/";
-
 // setting marker variable
 var markers = [];
 var contentDialog = [];
@@ -15,11 +11,11 @@ var directionsService = new google.maps.DirectionsService();
 
 // getDistributionAll();
 
-function getDistributionAll(){
+function getDeliveryNow(){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getDistributionAll.php",
+    url   : "http://localhost/jualikan.id/backend/web/api/getDistributionAll.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -33,12 +29,11 @@ function getDistributionAll(){
   });
 }
 
-function getKabehOrder(id){
-  console.log(id);
+function getKabehOrder(){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getAllOrder2.php?id=" + id,
+    url   : "http://localhost/jualikan.id/backend/web/api/getAllOrder2.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -52,12 +47,11 @@ function getKabehOrder(id){
   });
 }
 
-function getDelivery(id){
-  console.log(id);
+function getOrderHariIni(){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getDeliveryAll.php?id=" + id,
+    url   : "http://localhost/jualikan.id/backend/web/api/getOrderHariIni.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -71,68 +65,11 @@ function getDelivery(id){
   });
 }
 
-function getDeliveryHariIni(id){
-  console.log(id);
+function getOrderBulanIni(){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getDeliveryHariIni.php?id=" + id,
-    success : function(result){
-      var resultObj = JSON.parse(result);
-      $.each(resultObj, function(key, value){
-        console.log(value.marker);
-        markers.push(value.marker);
-        contentDialog.push(value.dialog);
-        markerStats.push(value.status);
-      });
-      initializeOrderMaps();
-    }
-  });
-}
-
-function getDeliveryBulanIni(id){
-  console.log(id);
-  $.ajax({
-    type  : "GET",
-    data  : "",
-    url   : server + "backend/web/api/getDeliveryBulanIni.php?id=" + id,
-    success : function(result){
-      var resultObj = JSON.parse(result);
-      $.each(resultObj, function(key, value){
-        console.log(value.marker);
-        markers.push(value.marker);
-        contentDialog.push(value.dialog);
-        markerStats.push(value.status);
-      });
-      console.log(markers.length);
-      initializeOrderMaps();
-    }
-  });
-}
-
-function getOrderHariIni(id){
-  $.ajax({
-    type  : "GET",
-    data  : "",
-    url   : server + "backend/web/api/getOrderHariIni.php?id="+ id,
-    success : function(result){
-      var resultObj = JSON.parse(result);
-      $.each(resultObj, function(key, value){
-        console.log(value.marker);
-        markers.push(value.marker);
-        contentDialog.push(value.dialog);
-        markerStats.push(value.status);
-      });
-      initializeOrderMaps();
-    }
-  });
-}
-
-function getOrderBulanIni(id){
-  $.ajax({
-    type  : "GET",
-    data  : "",
-    url   : server + "backend/web/api/getOrderBulanIni.php?id=" + id,
+    url   : "http://localhost/jualikan.id/backend/web/api/getOrderBulanIni.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -150,7 +87,7 @@ function getDetailOrder(id){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getAllOrder3.php?id="+id,
+    url   : "http://localhost/jualikan.id/backend/web/api/getAllOrder3.php?id="+id,
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -168,7 +105,7 @@ function getKoperasi(){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getKoperasi.php",
+    url   : "http://localhost/jualikan.id/backend/web/api/getKoperasi.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -186,7 +123,7 @@ function getDirectionFromOrder(id){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getOrderDirections.php?id="+id,
+    url   : "http://localhost/jualikan.id/backend/web/api/getOrderDirections.php?id="+id,
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -205,7 +142,7 @@ function getDistributionAandOrderAll(){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getDistributionAndOrder.php",
+    url   : "http://localhost/jualikan.id/backend/web/api/getDistributionAndOrder.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -223,7 +160,7 @@ function getDistributionById(id){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : server + "backend/web/api/getDistributionById.php?id="+id,
+    url   : "http://localhost/jualikan.id/backend/web/api/getDistributionById.php?id="+id,
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -254,8 +191,8 @@ function initialize() {
   var infoWindow = new google.maps.InfoWindow(), marker, i;
 
   // Loop through our array of markers & place each one on the map
-  var imageCompany = server + "frontend/web/img/icon_company.png";
-  var imageOrder = server + "frontend/web/img/icon_user.png";
+  var imageCompany = "http://localhost/jualikan.id/frontend/web/img/icon_company.png";
+  var imageOrder = "http://localhost/jualikan.id/frontend/web/img/icon_user.png";
   // console.log(image);
 
   var icons = {
@@ -310,10 +247,10 @@ function initializeOrderMaps() {
   var bounds = new google.maps.LatLngBounds();
 
   // Loop through our array of markers & place each one on the map
-  var imageGreenOrder = server + "frontend/web/img/order_green_marker.png";
-  var imageOrangeOrder = server + "frontend/web/img/order_orange_marker.png";
-  var imageBlueOrder = server + "frontend/web/img/order_blue_marker.png";
-  var imageRedOrder = server + "frontend/web/img/order_red_marker.png";
+  var imageGreenOrder = "http://localhost/jualikan.id/frontend/web/img/order_green_marker.png";
+  var imageOrangeOrder = "http://localhost/jualikan.id/frontend/web/img/order_orange_marker.png";
+  var imageBlueOrder = "http://localhost/jualikan.id/frontend/web/img/order_blue_marker.png";
+  var imageRedOrder = "http://localhost/jualikan.id/frontend/web/img/order_red_marker.png";
   // console.log(image);
 
   var icons = {
@@ -335,7 +272,7 @@ function initializeOrderMaps() {
   };
 
   for( i = 0; i < markers.length; i++ ) {
-      console.log(markers[1]);
+      // console.log(markers[1]);
       var position = new google.maps.LatLng(markers[i][0], markers[i][1]);
       // bounds.extend(position);
       marker = new google.maps.Marker({

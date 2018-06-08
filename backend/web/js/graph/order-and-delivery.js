@@ -9,6 +9,12 @@ var order_sukses_value = [];
 var order_gagal_value = [];
 var pengirman_value = [];
 
+var pengiriman_sukses = [];
+var pengiriman_gagal = [];
+var pengiriman_dalam_proses = [];
+
+var pengiriman_sukses_text, pengiriman_gagal_text, pengiriman_dalam_proses_text;
+
 function displayDelivery(id){
     $.ajax({
         type : "GET",
@@ -33,36 +39,36 @@ function displayDelivery(id){
             data: {
                 labels: tanggal,
                 datasets: [{
-                    label: 'Jumlah Order yang Sukses',
+                    label: 'Jumlah pesanan yang sukses',
                     data: order_sukses,
                     fill: false,
                     borderColor: [
-                        'rgba(0, 255, 0, 1)',
-                        'rgba(0, 255, 0, 1)',
-                        'rgba(0, 255, 0, 1)',
                         'rgba(0, 255, 0, 1)'
+                    ],
+                    backgroundColor: [
+                        'rgba(0, 255, 0, 0.5)'
                     ],
                     borderWidth: 1
                 }, {
-                    label: 'Jumlah Order yang Gagal',
+                    label: 'Jumlah pesanan yang gagal',
                     data: order_gagal,
                     fill: false,
                     borderColor: [
-                        'rgba(255, 0, 0, 1)',
-                        'rgba(255, 0, 0, 1)',
-                        'rgba(255, 0, 0, 1)',
                         'rgba(255, 0, 0, 1)'
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.5)'
                     ],
                     borderWidth: 1
                 }, {
-                    label: 'Jumlah Pengiriman',
+                    label: 'Jumlah pesanan dalam proses',
                     data: pengirman,
                     fill: false,
                     borderColor: [
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
                         'rgba(0, 0, 255, 1)'
+                    ],
+                    backgroundColor: [
+                        'rgba(0, 0, 255, 0.5)'
                     ],
                     borderWidth: 1
                 }]
@@ -93,10 +99,14 @@ function displayDelivery(id){
 
               console.log(val.order_berhasil);
 
+              pengiriman_sukses.push(val.delivery_sukses);
+              pengiriman_gagal.push(val.delivery_gagal);
+              pengiriman_dalam_proses.push(val.delivery_dalam_proses);
 
               tanggal1.push(val.date);
-              order_sukses_value.push(val.order);
-              pengirman_value.push(val.delivery);
+              pengiriman_sukses_text = val.delivery_sukses_text;
+              pengiriman_gagal_text = val.delivery_gagal_text;
+              pengiriman_dalam_proses_text = val.delivery_dalam_proses_text;
 
             });
 
@@ -106,25 +116,36 @@ function displayDelivery(id){
             data: {
                 labels: tanggal1,
                 datasets: [{
-                    label: 'Jumlah Order Sukses',
-                    data: order_sukses_value,
+                    label: pengiriman_sukses_text,
+                    data: pengiriman_sukses,
                     fill: false,
                     borderColor: [
-                        'rgba(0, 255, 0, 1)',
-                        'rgba(0, 255, 0, 1)',
-                        'rgba(0, 255, 0, 1)',
                         'rgba(0, 255, 0, 1)'
+                    ],
+                    backgroundColor: [
+                        'rgba(0, 255, 0, 0.5)'
                     ],
                     borderWidth: 1
                 }, {
-                    label: 'Jumlah Pengiriman',
-                    data: pengirman_value,
+                    label: pengiriman_dalam_proses_text,
+                    data: pengiriman_dalam_proses,
                     fill: false,
                     borderColor: [
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
                         'rgba(0, 0, 255, 1)'
+                    ],
+                    backgroundColor: [
+                        'rgba(0, 0, 255, 0.5)'
+                    ],
+                    borderWidth: 1
+                },{
+                    label: pengiriman_gagal_text,
+                    data: pengiriman_gagal,
+                    fill: false,
+                    borderColor: [
+                        'rgba(255, 0, 0, 1)'
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.5)'
                     ],
                     borderWidth: 1
                 }]

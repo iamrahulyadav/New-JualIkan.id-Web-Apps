@@ -9,6 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+use yii\data\SqlDataProvider;
+
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
  */
@@ -35,12 +39,89 @@ class DeliveryController extends Controller
      */
     public function actionIndex()
     {
+        date_default_timezone_set('Asia/Jakarta');
+        $date = Date('Y-m-d');
+        $query = new Query;
+        $query
+              ->from('`delivery` c')
+              ->orderBy(['c.delivery_time_depart' => SORT_DESC]);
+
+        $count = $query->count();
+
+        // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
         $searchModel = new DeliverySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $provider,
+        ]);
+    }
+
+    public function actionHariini()
+    {
+
+        date_default_timezone_set('Asia/Jakarta');
+        $date = Date('Y-m-d');
+        $query = new Query;
+        $query
+              ->from('`delivery`')
+              ->andFilterWhere(['like', 'delivery_time_depart',$date])
+              ->orderBy(['delivery_time_depart' => SORT_ASC]);
+
+        $total = $query->count();
+
+        // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $total,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $searchModel = new DeliverySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('hariini', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $provider,
+        ]);
+    }
+
+    public function actionBulanini()
+    {
+        $month = Date('m');
+        $last  = date('t');
+
+        $firstDate = Date('Y-'. $month . '-01');
+        $lastDate = Date('Y-'. $month . '-' . $last);
+
+        $query = Delivery::find()->where(['between', 'delivery_time_depart', $firstDate, $lastDate])->orderBy(['delivery_time_depart' => SORT_DESC]);
+        $total = $query->count();
+        $count = count($query);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $total,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $searchModel = new DeliverySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('bulanini', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $provider,
         ]);
     }
 

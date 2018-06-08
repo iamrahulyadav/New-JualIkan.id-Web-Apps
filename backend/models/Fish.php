@@ -35,7 +35,7 @@ class Fish extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fish_image', 'fish_name', 'fish_price', 'fish_koperasi_id', 'fish_category_id', 'fish_condition_id', 'fish_size_id', 'fish_stock', 'fish_description', 'fish_date'], 'required'],
+            [['fish_name', 'fish_price', 'fish_koperasi_id', 'fish_category_id', 'fish_condition_id', 'fish_size_id', 'fish_stock', 'fish_description', 'fish_date'], 'required'],
             [['fish_image', 'fish_description'], 'string'],
             [['fish_price', 'fish_koperasi_id', 'fish_category_id', 'fish_condition_id', 'fish_size_id', 'fish_stock'], 'integer'],
             [['fish_date'], 'safe'],

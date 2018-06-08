@@ -4,9 +4,11 @@
   date_default_timezone_set('Asia/Jakarta');
   $date = date('Y-m-d');
 
+  $id = $_GET['id'];
+
   $sql = "SELECT pesanan.*, user.*
           FROM `order` as pesanan, user_pengguna as user
-          WHERE user.user_id = pesanan.order_user_id and pesanan.order_date like '%{$date}%'";
+          WHERE user.user_id = pesanan.order_user_id and pesanan.order_koperasi_location_id = $id and pesanan.order_date like '%{$date}%'";
 
   $queryResult = $connect->query($sql);
   $result = array();

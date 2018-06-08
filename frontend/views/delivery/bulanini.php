@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
 $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
 
+
 ?>
 <div class="delivery-index">
 
@@ -148,7 +149,7 @@ $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->iden
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="<?php echo $server?>backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
-      getDelivery("<?php echo $object->koperasi_id ?>");
+    getDeliveryBulanIni("<?php echo $object->koperasi_id ?>");
     </script>
 
 </div>

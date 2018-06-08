@@ -1,6 +1,7 @@
 <?php
   include 'connect.php';
-  $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id";
+  $id = $_GET["id"];
+  $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id and pesanan.order_koperasi_location_id  = $id";
   $queryResult = $connect->query($sql);
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){

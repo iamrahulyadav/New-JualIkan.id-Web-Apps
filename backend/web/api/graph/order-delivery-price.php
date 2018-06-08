@@ -23,30 +23,43 @@
         $obj["id"] = $i;
         $obj["date"] = $date;
 
-        $sql1 = "SELECT * FROM `order` WHERE order_koperasi_location_id = '$id' and order_date like '%{$date}%' and order_status = 3";
+        $sql1 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and (delivery_status = 0 or delivery_status = 1)";
         $res1 = $connect->query($sql1);
 
         $tot1 = 0;
 
         while($row1 = $res1->fetch_assoc()){
-            $tot1 = (int) $row1['order_payment_total'] + $tot1;
+            $tot1++;
         }
 
-        $obj["order_text"] = "Order ";
-        $obj["order"] = $tot1;
+        $obj["delivery_dalam_proses_text"] = "Jumlah pengiriman dalam proses";
+        $obj["delivery_dalam_proses"] = $tot1;
 
-        $sql2 = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = '$id' and delivery_time_depart like '$date'";
+        $sql2 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and delivery_status = 2";
         $res2 = $connect->query($sql2);
         $row2 = $res2->num_rows;
 
         $tot2 = 0;
 
         while($row2 = $res2->fetch_assoc()){
-            $tot2 = (int) $row2['delivery_payment'] + $tot2;
+            $tot2++;
         }
 
-        $obj["delivery_text"] = "Delivery";
-        $obj["delivery"] = $tot2;
+        $obj["delivery_sukses_text"] = "Jumlah pengiriman yang sukses";
+        $obj["delivery_sukses"] = $tot2;
+
+        $sql3 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and delivery_status = 2";
+        $res3 = $connect->query($sql3);
+        $row3 = $res3->num_rows;
+
+        $tot3 = 0;
+
+        while($row3 = $res3->fetch_assoc()){
+            $tot3++;
+        }
+
+        $obj["delivery_gagal_text"] = "Jumlah pengiriman yang gagal";
+        $obj["delivery_gagal"] = $tot2;
 
         $response[] = $obj;
     }

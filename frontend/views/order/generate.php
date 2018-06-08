@@ -1,11 +1,13 @@
 <?php
 use frontend\models\UserKoperasi;
 $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+$server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
+
 ?>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initialize"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- <script src="http://localhost/jualikan.id/backend/web/js/setMapsnCountVRP.js" ></script> -->
-<script src="http://localhost/jualikan.id/backend/web/js/setAfterVRPMap.js" ></script>
+<script src="<?php echo $server ?>backend/web/js/setAfterVRPMap.js" ></script>
 <!-- <script src="http://localhost/jualikan.id/backend/web/js/setBeforeVRPMap.js" ></script> -->
 
 

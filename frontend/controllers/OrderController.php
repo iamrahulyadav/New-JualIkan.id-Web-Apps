@@ -44,7 +44,7 @@ class OrderController extends Controller
         $query = new Query;
         $query
               ->from('`order` c')
-              ->orderBy(['c.order_date' => SORT_ASC]);
+              ->orderBy(['c.order_date' => SORT_DESC]);
 
         $count = $query->count();
 
@@ -206,9 +206,9 @@ class OrderController extends Controller
         $model = $this->findModel($id);
         $model->order_status = 1;
         if ($model->save()) {
-            return $this->redirect(['view', 'id' => $model->order_id]);
+          return $this->redirect(['hariini']);
         }else {
-            return $this->redirect(['index']);
+            return $this->redirect(['hariini']);
         }
     }
 

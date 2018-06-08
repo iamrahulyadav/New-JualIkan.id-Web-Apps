@@ -5,7 +5,12 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 
 use common\models\UserDriver;
-use backend\models\UserKoperasi;
+use frontend\models\UserKoperasi;
+use common\models\UserPengguna;
+use common\models\Order;
+use common\models\DeliveryTime;
+use yii\helpers\ArrayHelper;
+use yii\db\Query;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\DeliverySearch */
@@ -148,7 +153,7 @@ $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->iden
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="<?php echo $server?>backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
-      getDelivery("<?php echo $object->koperasi_id ?>");
+      getDeliveryHariIni("<?php echo $object->koperasi_id ?>");
     </script>
 
 </div>

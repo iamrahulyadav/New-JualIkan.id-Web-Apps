@@ -29,7 +29,7 @@ if (isset($_POST['driver_id']) && isset($_POST['delivery_id']) && isset($_POST['
         $deliveryResult = $connect->query($sqlDelivery);
         $row = $deliveryResult->fetch_assoc();
 
-        arrayOrder(arrayOrder(json_decode($row['delivery_order_id'])), $driver_id);
+        arrayOrder(json_decode($row['delivery_order_id']), $driver_id);
 
         $response['response'] = 200;
         $response['status'] = true;
@@ -95,8 +95,8 @@ function postNotification($user_id, $order_id, $idPhone){
     );
 
     $data = array(
-        'user_id' => $user_id,
-        'order_id' => $order_id
+        'user_id' => $order_id,
+        'order_id' => $user_id
     );
 
     $fields = array(
