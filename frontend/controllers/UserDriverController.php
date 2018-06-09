@@ -9,6 +9,13 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use frontend\models\UserKoperasi;
+use yii\web\UploadedFile;
+
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+use yii\data\SqlDataProvider;
+
 /**
  * UserDriverController implements the CRUD actions for UserDriver model.
  */
@@ -35,12 +42,28 @@ class UserDriverController extends Controller
      */
     public function actionIndex()
     {
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
+        $query = new Query;
+        $query
+              ->from('user_driver')
+              ->andWhere(['driver_koperasi_id' => $idkoperasi]);
+        $total = $query->count();
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $total,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
         $searchModel = new UserDriverSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $provider,
         ]);
     }
 
@@ -65,14 +88,30 @@ class UserDriverController extends Controller
     public function actionCreate()
     {
         $model = new UserDriver();
+        $koperasi = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->driver_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->driver_koperasi_id = $koperasi->koperasi_id;
+            $image = UploadedFile::getInstance($model, 'driver_image');
+            if ($image == null) {
+                $model->driver_image = "frontend/web/img/user_default.png";
+            }else {
+                $model->driver_image = 'img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs($model->driver_image);
+                $model->driver_image = "frontend/web/" . $model->driver_image;
+            }
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->driver_id]);
+            }else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

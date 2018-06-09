@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\data\SqlDataProvider;
+use backend\models\UserKoperasi;
 
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
@@ -39,11 +40,16 @@ class DeliveryController extends Controller
      */
     public function actionIndex()
     {
+
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
         date_default_timezone_set('Asia/Jakarta');
         $date = Date('Y-m-d');
         $query = new Query;
         $query
               ->from('`delivery` c')
+              ->andWhere(['c.delivery_order_koperasi_id' => $idkoperasi])
               ->orderBy(['c.delivery_time_depart' => SORT_DESC]);
 
         $count = $query->count();
@@ -69,11 +75,15 @@ class DeliveryController extends Controller
     public function actionHariini()
     {
 
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
         date_default_timezone_set('Asia/Jakarta');
         $date = Date('Y-m-d');
         $query = new Query;
         $query
               ->from('`delivery`')
+              ->andWhere(['delivery_order_koperasi_id' => $idkoperasi])
               ->andFilterWhere(['like', 'delivery_time_depart',$date])
               ->orderBy(['delivery_time_depart' => SORT_ASC]);
 
@@ -99,13 +109,16 @@ class DeliveryController extends Controller
 
     public function actionBulanini()
     {
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
         $month = Date('m');
         $last  = date('t');
 
         $firstDate = Date('Y-'. $month . '-01');
         $lastDate = Date('Y-'. $month . '-' . $last);
 
-        $query = Delivery::find()->where(['between', 'delivery_time_depart', $firstDate, $lastDate])->orderBy(['delivery_time_depart' => SORT_DESC]);
+        $query = Delivery::find()->where(['between', 'delivery_time_depart', $firstDate, $lastDate])->andWhere(['delivery_order_koperasi_id' => $idkoperasi])->orderBy(['delivery_time_depart' => SORT_DESC]);
         $total = $query->count();
         $count = count($query);
         $provider = new ActiveDataProvider([

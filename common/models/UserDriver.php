@@ -17,8 +17,8 @@ use Yii;
  * @property int $driver_koperasi_id
  * @property int $driver_vehicle_weight
  * @property string $driver_address
- * @property int $driver_track_id
  * @property int $driver_saldo
+ * @property int $driver_status
  */
 class UserDriver extends \yii\db\ActiveRecord
 {
@@ -36,12 +36,13 @@ class UserDriver extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['driver_full_name', 'driver_phone', 'driver_email', 'driver_password', 'driver_device_id', 'driver_image', 'driver_koperasi_id', 'driver_vehicle_weight', 'driver_address', 'driver_track_id', 'driver_saldo'], 'required'],
+            [['driver_full_name', 'driver_phone', 'driver_email', 'driver_password', 'driver_koperasi_id', 'driver_vehicle_weight', 'driver_address'], 'required'],
             [['driver_image', 'driver_address'], 'string'],
-            [['driver_koperasi_id', 'driver_vehicle_weight', 'driver_track_id', 'driver_saldo'], 'integer'],
-            [['driver_full_name', 'driver_email', 'driver_device_id'], 'string', 'max' => 100],
+            [['driver_koperasi_id', 'driver_vehicle_weight', 'driver_saldo', 'driver_status'], 'integer'],
+            [['driver_full_name', 'driver_email'], 'string', 'max' => 100],
             [['driver_phone'], 'string', 'max' => 12],
             [['driver_password'], 'string', 'max' => 150],
+            [['driver_device_id'], 'string', 'max' => 191],
         ];
     }
 
@@ -56,13 +57,13 @@ class UserDriver extends \yii\db\ActiveRecord
             'driver_phone' => 'No HP Driver',
             'driver_email' => 'Email Driver',
             'driver_password' => 'Password Driver',
-            'driver_device_id' => 'ID Device Driver',
+            'driver_device_id' => 'Device Driver ID',
             'driver_image' => 'Foto Driver',
-            'driver_koperasi_id' => 'Lokasi Koperasi',
-            'driver_vehicle_weight' => 'Berat Kapasitas',
+            'driver_koperasi_id' => 'Nama Koperasi',
+            'driver_vehicle_weight' => 'Muatan Maks',
             'driver_address' => 'Alamat Driver',
-            'driver_track_id' => 'Driver Track ID',
             'driver_saldo' => 'Saldo Driver',
+            'driver_status' => 'Status Driver',
         ];
     }
 }

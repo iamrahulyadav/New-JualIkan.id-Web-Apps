@@ -33,6 +33,24 @@ function getDistributionAll(){
   });
 }
 
+function getKoperasiById(id){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getKoperasiById.php?id=" + id,
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initialize();
+    }
+  });
+}
+
 function getKabehOrder(id){
   console.log(id);
   $.ajax({
@@ -248,10 +266,9 @@ function initialize() {
   // Display a map on the page
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-
-
   // Display multiple markers on a map
   var infoWindow = new google.maps.InfoWindow(), marker, i;
+  var bounds = new google.maps.LatLngBounds();
 
   // Loop through our array of markers & place each one on the map
   var imageCompany = server + "frontend/web/img/icon_company.png";
@@ -279,6 +296,8 @@ function initialize() {
           // title: markers[i][0]
       });
 
+      bounds.extend(marker.position);
+
       // Allow each marker to have an info window
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
           return function() {
@@ -287,6 +306,8 @@ function initialize() {
           }
       })(marker, i));
   }
+
+  map.fitBounds(bounds);
 }
 
 function initializeOrderMaps() {

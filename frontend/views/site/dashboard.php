@@ -7,6 +7,7 @@ use common\models\KoperasiPinjaman;
 use common\models\KoperasiSimpanan;
 use common\models\UserDriver;
 use common\models\UserNelayan;
+use common\models\FishReview;
 use backend\models\UserKoperasi;
 /* @var $this yii\web\View */
 
@@ -31,13 +32,22 @@ $fish = Fish::find()->where(['fish_koperasi_id' => $koperasiId])->all();
 $delivery = Delivery::find()->where(['delivery_order_koperasi_id' => $koperasiId])->all();
 $nelayan = UserNelayan::find()->where(['nelayan_cooperative_id' => $koperasiId])->all();
 
-$driver = UserDriver::find()->all();
+$driver = UserDriver::find()->where(['driver_koperasi_id' => $koperasiId])->all();
 
-$pinjaman = KoperasiPinjaman::find()->all();
-$simpanan = KoperasiSimpanan::find()->all();
+$pinjaman = KoperasiPinjaman::find()->where(['pinjaman_koperasi_id' => $koperasiId])->all();
+$simpanan = KoperasiSimpanan::find()->where(['simpanan_koperasi_id' => $koperasiId])->all();
+
+$FishReview = FishReview::find()->where(['koperasi_id' => $koperasiId])->all();
 
 $totPinjaman = 0;
 $totSimpanan = 0;
+$totReview = 0;
+
+for($i = 0; $i < count($FishReview); $i++){
+    $totReview = $totReview + $FishReview[$i]['review_jumalh'];
+}
+
+$review = $totReview/(count($FishReview));
 
 for($i = 0; $i < count($pinjaman); $i++){
     $totPinjaman = $totPinjaman + $pinjaman[$i]['pinjaman_jumlah'];
@@ -189,7 +199,7 @@ $this->title = 'Koperasi Jualikan.id';
                 <div class="icon">
                     <i class="fa fa-users"></i>
                 </div>
-                <a href="http://localhost/papward/web/barang-bright" class="small-box-footer">More info
+                <a href="<?php echo $server ?>user-nelayan" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -199,14 +209,14 @@ $this->title = 'Koperasi Jualikan.id';
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3 style="font-size:32px;">
-                        <?php echo count($driver);?>
+                        <?php echo $review . "/5";?>
                     </h3>
-                    <p>Jumlah Review</p>
+                    <p>Jumlah Rating</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa fa-star"></i>
                 </div>
-                <a href="http://localhost/papward/web/spbu" class="small-box-footer">More info
+                <a href="<?php echo $server ?>fish-review" class="small-box-footer">More info
                     <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>

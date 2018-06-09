@@ -52,19 +52,19 @@ class UserKoperasi extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'koperasi_id' => 'Koperasi ID',
-            'koperasi_name' => 'Koperasi Name',
-            'kopreasi_image' => 'Kopreasi Image',
-            'koperasi_level_id' => 'Koperasi Level ID',
-            'koperasi_holder_name' => 'Koperasi Holder Name',
-            'koperasi_holder_phone' => 'Koperasi Holder Phone',
-            'koperasi_email' => 'Koperasi Email',
-            'koperasi_password' => 'Koperasi Password',
-            'koperasi_kota_id' => 'Koperasi Kota ID',
-            'koperasi_address' => 'Koperasi Address',
-            'koperasi_lat' => 'Koperasi Lat',
-            'koperasi_lng' => 'Koperasi Lng',
-            'koperasi_status' => 'Koperasi Status',
+            'koperasi_id' => 'ID Koperasi',
+            'koperasi_name' => 'Nama Koperasi',
+            'kopreasi_image' => 'Foto Koperasi',
+            'koperasi_level_id' => 'Level Koperasi',
+            'koperasi_holder_name' => 'Nama Pemilik',
+            'koperasi_holder_phone' => 'No HP Pemilik',
+            'koperasi_email' => 'Email Koperasi',
+            'koperasi_password' => 'Password Koperasi',
+            'koperasi_kota_id' => 'Kota Koperasi',
+            'koperasi_address' => 'Alamat Koperasi',
+            'koperasi_lat' => 'Lat Koperasi',
+            'koperasi_lng' => 'Lng Koperasi',
+            'koperasi_status' => 'Status Koperasi',
         ];
     }
 }

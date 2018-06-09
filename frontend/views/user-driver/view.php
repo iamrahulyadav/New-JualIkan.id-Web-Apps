@@ -3,16 +3,16 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
+use frontend\models\UserKoperasi;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\UserDriver */
 
-$this->title = $model->driver_id;
+$this->title = $model->driver_full_name;
 $this->params['breadcrumbs'][] = ['label' => 'User Drivers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-driver-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->driver_id], ['class' => 'btn btn-primary']) ?>
@@ -28,19 +28,71 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'driver_id',
+            [
+                'attribute'=>'driver_image',
+                'format' => 'html',
+                'value' => function ($data){
+                    return Html::img(Yii::$app->request->baseUrl . '/'. $data['driver_image'], ['width' => '100%','height' => '125px']);
+                },
+                'headerOptions' => ['style' => 'width:130px;'],
+            ],
             'driver_full_name',
-            'driver_phone',
             'driver_email:email',
-            'driver_password',
-            'driver_device_id',
-            'driver_image:ntext',
-            'driver_koperasi_id',
-            'driver_vehicle_weight',
+            'driver_phone',
+            [
+                'attribute'=>'driver_koperasi_id',
+                'format' => 'html',
+                'value' => function ($data){
+                    $koperasi = UserKoperasi::find()->where(['koperasi_id' => $data['driver_koperasi_id']])->one();
+                    return $koperasi['koperasi_name'];
+                },
+                'headerOptions' => ['style' => 'width:130px;'],
+            ],
             'driver_address:ntext',
-            'driver_track_id',
-            'driver_saldo',
-            'driver_status',
+            [
+                'attribute'=>'driver_vehicle_weight',
+                'format' => 'html',
+                'value' => function ($data){
+                    return $data['driver_vehicle_weight'] . " Kg";
+                },
+                'headerOptions' => ['style' => 'width:130px;'],
+            ],
+            [
+                'attribute'=>'driver_saldo',
+                'format' => 'html',
+                'value' => function ($data){
+                    return "Rp. " . $data['driver_saldo'];
+                },
+            ],
+            [
+                'attribute' => 'driver_status',
+                'format' => 'html',
+                'value' => function ($data){
+                    if ($data['driver_status'] == 0){
+                        return "<p style='color:red;'>Tidak Aktif</p>";
+                    }
+                    elseif ($data['driver_status'] == 1){
+                        return "<p style='color:green;'>Aktif</p>";
+                    }
+                    elseif ($data['driver_status'] == 2){
+                        return "<p style='color:#337ab7;'>Dalam Proses Pengiriman</p><p>".
+                        Html::a('Tracking Driver', ['delivery/track', 'id' => $data['driver_id']],
+                        [
+                            'style' => 'width:150px',
+                            'class' => 'btn btn-success',
+                            'data' => [
+                                'confirm' => 'Apa Benar kamu akan verifikasi pembayaran ini ?',
+                                'method' => 'post',
+                            ],
+                        ])."</p>";
+                    }
+                },
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'prompt'=>'Pilih Status',
+                ],
+                'filter'=>array( 0 =>"Tidak Aktif", 1 =>"Aktif", 2 =>"Dalam Proses Pengiriman"),
+            ],
         ],
     ]) ?>
 

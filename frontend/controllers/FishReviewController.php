@@ -3,17 +3,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use frontend\models\UserKoperasi;
-use frontend\models\UserKoperasiSearch;
+use common\models\FishReview;
+use frontend\models\FishReviewSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
- * UserKoperasiController implements the CRUD actions for UserKoperasi model.
+ * FishReviewController implements the CRUD actions for FishReview model.
  */
-class UserKoperasiController extends Controller
+class FishReviewController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +30,12 @@ class UserKoperasiController extends Controller
     }
 
     /**
-     * Lists all UserKoperasi models.
+     * Lists all FishReview models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserKoperasiSearch();
+        $searchModel = new FishReviewSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class UserKoperasiController extends Controller
     }
 
     /**
-     * Displays a single UserKoperasi model.
+     * Displays a single FishReview model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,25 +57,17 @@ class UserKoperasiController extends Controller
         ]);
     }
 
-    public function actionProfile()
-    {
-        $model = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
-        return $this->render('profile', [
-            'model' => $model,
-        ]);
-    }
-
     /**
-     * Creates a new UserKoperasi model.
+     * Creates a new FishReview model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new UserKoperasi();
+        $model = new FishReview();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->koperasi_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -85,7 +76,7 @@ class UserKoperasiController extends Controller
     }
 
     /**
-     * Updates an existing UserKoperasi model.
+     * Updates an existing FishReview model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,20 +85,9 @@ class UserKoperasiController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $imageBefore = $model->kopreasi_image;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $image = UploadedFile::getInstance($model, 'kopreasi_image');
-            if ($image == null) {
-                $model->kopreasi_image = $imageBefore;
-            }else {
-                $model->kopreasi_image = 'img/' . $image->baseName. '.' . $image->extension;
-                $image->saveAs($model->kopreasi_image);
-                $model->kopreasi_image = "frontend/web/" . $model->kopreasi_image;
-            }
-            if ($model->save()) {
-                return $this->redirect(['profile']);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -116,7 +96,7 @@ class UserKoperasiController extends Controller
     }
 
     /**
-     * Deletes an existing UserKoperasi model.
+     * Deletes an existing FishReview model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -130,15 +110,15 @@ class UserKoperasiController extends Controller
     }
 
     /**
-     * Finds the UserKoperasi model based on its primary key value.
+     * Finds the FishReview model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return UserKoperasi the loaded model
+     * @return FishReview the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UserKoperasi::findOne($id)) !== null) {
+        if (($model = FishReview::findOne($id)) !== null) {
             return $model;
         }
 

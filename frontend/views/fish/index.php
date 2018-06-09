@@ -96,31 +96,31 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <span class="fa fa-star"></span>
                                 <span class="fa fa-star"></span>
                                 <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>' . " ($total.0)";
+                                <span class="fa fa-star"></span>' . " ($total)";
                     }else if ($total > 1 && $total <= 2) {
                         return '<span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star"></span>
                                 <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>'. " ($total.0)";
+                                <span class="fa fa-star"></span>'. " ($total)";
                     }else if ($total > 2 && $total <= 3) {
                         return '<span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>'. " ($total.0)";
+                                <span class="fa fa-star"></span>'. " ($total)";
                     }else if ($total > 3 && $total <= 4) {
                         return '<span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
-                                <span class="fa fa-star "></span>' . " ($total.0)";
+                                <span class="fa fa-star "></span>' . " ($total)";
                     }else if ($total > 4 && $total <= 5) {
                         return '<span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
                                 <span class="fa fa-star text-warning"></span>
-                                <span class="fa fa-star text-warning"></span>' . " ($total.0)" ;
+                                <span class="fa fa-star text-warning"></span>' . " ($total)" ;
                     }
                 },
             ],

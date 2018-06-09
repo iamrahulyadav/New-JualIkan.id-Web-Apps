@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $user_id
  * @property int $fish_id
+ * @property int $koperasi_id
  * @property string $review_text
  * @property int $review_jumalh
  */
@@ -29,8 +30,8 @@ class FishReview extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'fish_id', 'review_text', 'review_jumalh'], 'required'],
-            [['id', 'user_id', 'fish_id', 'review_jumalh'], 'integer'],
+            [['user_id', 'fish_id', 'koperasi_id', 'review_text', 'review_jumalh'], 'required'],
+            [['user_id', 'fish_id', 'koperasi_id', 'review_jumalh'], 'integer'],
             [['review_text'], 'string'],
         ];
     }
@@ -41,11 +42,12 @@ class FishReview extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'fish_id' => 'Fish ID',
-            'review_text' => 'Review Text',
-            'review_jumalh' => 'Review Jumalh',
+            'id' => 'ID Review',
+            'user_id' => 'Nama User',
+            'fish_id' => 'Nama Ikan',
+            'koperasi_id' => 'Nama Koperasi',
+            'review_text' => 'Review',
+            'review_jumalh' => 'Rating',
         ];
     }
 }

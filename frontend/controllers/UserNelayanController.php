@@ -11,6 +11,10 @@ use yii\filters\VerbFilter;
 use frontend\models\UserKoperasi;
 use yii\web\UploadedFile;
 
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+use yii\data\SqlDataProvider;
+
 /**
  * UserNelayanController implements the CRUD actions for UserNelayan model.
  */
@@ -37,12 +41,28 @@ class UserNelayanController extends Controller
      */
     public function actionIndex()
     {
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
+        $query = new Query;
+        $query
+              ->from('user_nelayan')
+              ->andWhere(['nelayan_cooperative_id' => $idkoperasi]);
+        $total = $query->count();
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $total,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
         $searchModel = new UserNelayanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $provider,
         ]);
     }
 
@@ -96,7 +116,15 @@ class UserNelayanController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $model->nelayan_cooperative_id = $object->koperasi_id;
+        $model->nelayan_saldo = 0;
+
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'nelayan_image');
+            $model->nelayan_image = 'img/' . $image->baseName. '.' . $image->extension;
+            $image->saveAs($model->nelayan_image);
+            $model->save();
             return $this->redirect(['view', 'id' => $model->nelayan_id]);
         }
 

@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\data\SqlDataProvider;
+use backend\models\UserKoperasi;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -39,11 +40,16 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
+
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
         date_default_timezone_set('Asia/Jakarta');
         $date = Date('Y-m-d');
         $query = new Query;
         $query
               ->from('`order` c')
+              ->andWhere(['c.order_koperasi_location_id' => $idkoperasi])
               ->orderBy(['c.order_date' => SORT_DESC]);
 
         $count = $query->count();
@@ -69,17 +75,23 @@ class OrderController extends Controller
 
     public function actionHariini()
     {
+
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
         date_default_timezone_set('Asia/Jakarta');
         $date = Date('Y-m-d');
         $query = new Query;
         $query
               ->from('`order`')
+              ->andWhere(['order_koperasi_location_id' => $idkoperasi])
               ->andFilterWhere(['like', 'order_date',$date])
               ->orderBy(['order_date' => SORT_ASC]);
 
         $query2 = new Query;
         $query2
               ->from('`order`')
+              ->andWhere(['order_koperasi_location_id' => $idkoperasi])
               ->andFilterWhere(['like', 'order_date',$date])
               ->andWhere(['order_status' => 1])
               ->orderBy(['order_date' => SORT_DESC]);
@@ -121,13 +133,20 @@ class OrderController extends Controller
 
     public function actionBulanini()
     {
+
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
         $month = Date('m');
         $last  = date('t');
 
         $firstDate = Date('Y-'. $month . '-1');
         $lastDate = Date('Y-'. $month . '-' . $last);
 
-        $query = Order::find()->where(['between', 'order_date', $firstDate, $lastDate])->orderBy(['order_date' => SORT_DESC]);
+        $query = Order::find()
+          ->where(['between', 'order_date', $firstDate, $lastDate])
+          ->andWhere(['order_koperasi_location_id' => $idkoperasi])
+          ->orderBy(['order_date' => SORT_DESC]);
         $total = $query->count();
         $count = count($query);
         $provider = new ActiveDataProvider([
