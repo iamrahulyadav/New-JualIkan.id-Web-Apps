@@ -1,11 +1,15 @@
 <?php
   include 'connect.php';
-  $id = $_GET["id"];
 
   date_default_timezone_set('Asia/Jakarta');
   $date = date('Y-m-d');
 
-  $sql = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = $id and delivery_time_depart like '%{$date}%'";
+  if (isset($_GET['id'])) {
+      $id = $_GET["id"];
+      $sql = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = $id and delivery_time_depart like '%{$date}%'";
+  }else {
+      $sql = "SELECT * FROM delivery WHERE delivery_time_depart like '%{$date}%'";
+  }
   $queryResult = $connect->query($sql);
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){

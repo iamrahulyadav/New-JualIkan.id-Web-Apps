@@ -1,6 +1,5 @@
 <?php
   include 'connect.php';
-  $id = $_GET["id"];
 
   $month = Date('m');
   $last  = date('t');
@@ -8,7 +7,13 @@
   $date_first = date('Y-m-01 00:00:00');
   $date_last = date('Y-m-'. $last . ' H:m:s');
 
-  $sql = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = $id and delivery_time_depart BETWEEN '$date_first' AND '$date_last'";
+  if (isset($_GET['id'])) {
+      $id = $_GET["id"];
+      $sql = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = $id and delivery_time_depart BETWEEN '$date_first' AND '$date_last'";
+  }else {
+      $sql = "SELECT * FROM delivery WHERE delivery_time_depart BETWEEN '$date_first' AND '$date_last'";
+  }
+  
   $queryResult = $connect->query($sql);
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){

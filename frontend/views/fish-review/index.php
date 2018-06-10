@@ -22,8 +22,11 @@ for($i = 0; $i < count($FishReview); $i++){
     $totReview = $totReview + $FishReview[$i]['review_jumalh'];
 }
 
-$review = $totReview/(count($FishReview));
-
+if (count($FishReview) == 0) {
+    $review = 0;
+}else {
+    $review = $totReview/(count($FishReview));
+}
 $this->title = 'Daftar Review Koperasi';
 ?>
 <div class="fish-review-index">

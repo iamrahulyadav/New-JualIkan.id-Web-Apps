@@ -34,7 +34,7 @@ class UserPengguna extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_full_name', 'user_image', 'user_phone', 'user_email', 'user_password', 'user_device_id', 'user_kota_id', 'user_address', 'user_saldo'], 'required'],
+            [['user_full_name', 'user_phone', 'user_email', 'user_password', 'user_kota_id', 'user_address'], 'required'],
             [['user_image', 'user_address'], 'string'],
             [['user_kota_id', 'user_saldo'], 'integer'],
             [['user_full_name', 'user_email', 'user_password', 'user_device_id'], 'string', 'max' => 100],
@@ -48,16 +48,16 @@ class UserPengguna extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'user_id' => 'User ID',
-            'user_full_name' => 'User Full Name',
-            'user_image' => 'User Image',
-            'user_phone' => 'User Phone',
-            'user_email' => 'User Email',
-            'user_password' => 'User Password',
-            'user_device_id' => 'User Device ID',
-            'user_kota_id' => 'User Kota ID',
-            'user_address' => 'User Address',
-            'user_saldo' => 'User Saldo',
+            'user_id' => 'ID User',
+            'user_full_name' => 'Nama Lengkap User',
+            'user_image' => 'Foto User',
+            'user_phone' => 'No Telp User',
+            'user_email' => 'Email User',
+            'user_password' => 'Password User',
+            'user_device_id' => 'Device ID User',
+            'user_kota_id' => 'Nama Kota',
+            'user_address' => 'Alamat User',
+            'user_saldo' => 'Saldo User',
         ];
     }
 }

@@ -10,7 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use common\models\User;
-
+use yii\web\UploadedFile;
+use yii\db\Query;
 
 /**
  * UserKoperasiController implements the CRUD actions for UserKoperasi model.
@@ -93,6 +94,10 @@ class UserKoperasiController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($model->kopreasi_image == null) {
                 $model->kopreasi_image = 'frontend/web/img/icon-koperasi.png';
+            }else {
+                $image = UploadedFile::getInstance($model, 'kopreasi_image');
+                $model->kopreasi_image = 'frontend/web/img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs("../../".$model->kopreasi_image);
             }
             $model->koperasi_password = $this->generateRandomString();
             $model->koperasi_status = 1;
@@ -154,8 +159,16 @@ class UserKoperasiController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $image_before = $model->kopreasi_image;
 
         if ($model->load(Yii::$app->request->post()) ) {
+            $image = UploadedFile::getInstance($model, 'kopreasi_image');
+            if ($image == null) {
+                $model->kopreasi_image = $image_before;
+            }else {
+                $model->kopreasi_image = 'frontend/web/img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs("../../".$model->kopreasi_image);
+            }
             if ($model->koperasi_status == 0) {
                 $model->koperasi_lat = "";
                 $model->koperasi_lng = "";
@@ -188,7 +201,6 @@ class UserKoperasiController extends Controller
             $user->setPassword($model->koperasi_password);
             $user->generateAuthKey();
             //simpan akun
-            $user->save();
 
             //kirim akun ke sms
             $message = "Selamat akun koperasi anda berhasil diverivikasi oleh admin!%0a";
@@ -216,8 +228,9 @@ class UserKoperasiController extends Controller
 
             echo $result;
 
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->koperasi_id]);
+            if ($model->save() && $user->save()) {
+                return $this->redirect(['view', 'id' => $model->koperasi_id]);
+            }
 
             // kirim email
 

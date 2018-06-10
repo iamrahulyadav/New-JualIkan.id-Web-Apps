@@ -1,6 +1,6 @@
 <?php
   include 'connect.php';
-  $queryResult = $connect->query("SELECT * FROM user_koperasi WHERE koperasi_status = 1");
+  $queryResult = $connect->query("SELECT * FROM user_koperasi");
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){
     $marker = array();

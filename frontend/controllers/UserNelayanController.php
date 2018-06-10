@@ -90,12 +90,16 @@ class UserNelayanController extends Controller
 
         $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
         $model->nelayan_cooperative_id = $object->koperasi_id;
-        $model->nelayan_saldo = 0;
 
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'nelayan_image');
-            $model->nelayan_image = 'img/' . $image->baseName. '.' . $image->extension;
-            $image->saveAs($model->nelayan_image);
+            if ($image == null) {
+                $model->nelayan_image = "img/user_default.png";
+            }else {
+                $model->nelayan_image = 'img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs($model->nelayan_image);
+            }
+            $model->nelayan_saldo = 0;
             $model->save();
             return $this->redirect(['view', 'id' => $model->nelayan_id]);
         }

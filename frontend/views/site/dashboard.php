@@ -47,7 +47,11 @@ for($i = 0; $i < count($FishReview); $i++){
     $totReview = $totReview + $FishReview[$i]['review_jumalh'];
 }
 
-$review = $totReview/(count($FishReview));
+if (count($FishReview) == 0) {
+    $review = 0;
+}else {
+    $review = $totReview/(count($FishReview));
+}
 
 for($i = 0; $i < count($pinjaman); $i++){
     $totPinjaman = $totPinjaman + $pinjaman[$i]['pinjaman_jumlah'];

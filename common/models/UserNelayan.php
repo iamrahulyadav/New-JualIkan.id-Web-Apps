@@ -31,7 +31,7 @@ class UserNelayan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nelayan_full_name', 'nelayan_image', 'nelayan_phone', 'nelayan_cooperative_id', 'nelayan_address', 'nelayan_saldo'], 'required'],
+            [['nelayan_full_name',  'nelayan_phone', 'nelayan_cooperative_id', 'nelayan_address', 'nelayan_saldo'], 'required'],
             [['nelayan_image', 'nelayan_address'], 'string'],
             [['nelayan_cooperative_id', 'nelayan_saldo'], 'integer'],
             [['nelayan_full_name'], 'string', 'max' => 100],

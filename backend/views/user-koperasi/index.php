@@ -31,13 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- <h1><?= Html::encode($this->title) ?></h1> -->
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-
-    <?php if (count($newKop) > 0): ?>
-      <p>
-          <?= Html::a('Koperasi Baru ('. count($newKop) .')', ['baru'], ['class' => 'btn btn-warning']) ?>
-      </p>
-    <?php endif; ?>
-
     <p>
         <?= Html::a('Tambah Koperasi', ['create'], ['class' => 'btn btn-success']) ?>
     </p>

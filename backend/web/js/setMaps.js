@@ -89,8 +89,25 @@ function getDelivery(id){
   });
 }
 
+function getDeliveryAll(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getDeliveryAll.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
 function getDeliveryHariIni(id){
-  console.log(id);
   $.ajax({
     type  : "GET",
     data  : "",
@@ -108,12 +125,49 @@ function getDeliveryHariIni(id){
   });
 }
 
+
+function getDeliveryHariIniAll(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getDeliveryHariIni.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
 function getDeliveryBulanIni(id){
-  console.log(id);
   $.ajax({
     type  : "GET",
     data  : "",
     url   : server + "backend/web/api/getDeliveryBulanIni.php?id=" + id,
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      console.log(markers.length);
+      initializeOrderMaps();
+    }
+  });
+}
+
+function getDeliveryBulanIniAll(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getDeliveryBulanIni.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -146,11 +200,47 @@ function getOrderHariIni(id){
   });
 }
 
+function getOrderHariIniAll(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getOrderHariIni.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
 function getOrderBulanIni(id){
   $.ajax({
     type  : "GET",
     data  : "",
     url   : server + "backend/web/api/getOrderBulanIni.php?id=" + id,
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
+function getOrderBulanIniAll(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getOrderBulanIni.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -182,11 +272,47 @@ function getDetailOrder(id){
   });
 }
 
+function getDetailOrderAll(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getAllOrder3.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initializeOrderMaps();
+    }
+  });
+}
+
 function getKoperasi(){
   $.ajax({
     type  : "GET",
     data  : "",
     url   : server + "backend/web/api/getKoperasi.php",
+    success : function(result){
+      var resultObj = JSON.parse(result);
+      $.each(resultObj, function(key, value){
+        console.log(value.marker);
+        markers.push(value.marker);
+        contentDialog.push(value.dialog);
+        markerStats.push(value.status);
+      });
+      initialize();
+    }
+  });
+}
+
+function getKoperasiBaru(){
+  $.ajax({
+    type  : "GET",
+    data  : "",
+    url   : server + "backend/web/api/getKoperasiBaru.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){

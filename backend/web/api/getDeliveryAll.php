@@ -1,7 +1,11 @@
 <?php
   include 'connect.php';
-  $id = $_GET["id"];
-  $sql = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = $id";
+  if (isset($_GET['id'])) {
+    $id = $_GET["id"];
+    $sql = "SELECT * FROM delivery WHERE delivery_order_koperasi_id = $id";
+  }else {
+    $sql = "SELECT * FROM delivery";
+  }
   $queryResult = $connect->query($sql);
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){

@@ -1,7 +1,11 @@
 <?php
-  $id = $_GET['id'];
   include 'connect.php';
-  $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id and pesanan.order_id = '$id'";
+  if (isset($_GET['id'])) {
+      $id = $_GET['id'];
+      $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id and pesanan.order_id = '$id'";
+  }else {
+      $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id";
+  }
   $queryResult = $connect->query($sql);
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){

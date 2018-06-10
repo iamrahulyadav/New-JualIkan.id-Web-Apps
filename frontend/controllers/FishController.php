@@ -128,11 +128,16 @@ class FishController extends Controller
         $model = $this->findModel($id);
         $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
         $model->fish_koperasi_id = $object->koperasi_id;
+        $image_before = $model->fish_image;
 
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'fish_image');
-            $model->fish_image = 'img/' . $image->baseName. '.' . $image->extension;
-            $image->saveAs($model->fish_image);
+            if ($image == null) {
+                $model->fish_image = $image_before;
+            }else {
+                $model->fish_image = 'img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs($model->fish_image);
+            }
             $model->save();
             return $this->redirect(['view', 'id' => $model->fish_id]);
         }

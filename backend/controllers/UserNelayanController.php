@@ -8,6 +8,8 @@ use backend\models\UserNelayanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\UserKoperasi;
+use yii\web\UploadedFile;
 
 /**
  * UserNelayanController implements the CRUD actions for UserNelayan model.
@@ -66,7 +68,16 @@ class UserNelayanController extends Controller
     {
         $model = new UserNelayan();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'nelayan_image');
+            if ($image == null) {
+                $model->nelayan_image = "img/user_default.png";
+            }else {
+                $model->nelayan_image = 'img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs("../../frontend/web/".$model->nelayan_image);
+            }
+            $model->nelayan_saldo = 0;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->nelayan_id]);
         }
 
@@ -85,8 +96,17 @@ class UserNelayanController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $image_before = $model->nelayan_image;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'nelayan_image');
+            if ($image == null) {
+                $model->nelayan_image = $image_before;
+            }else {
+                $model->nelayan_image = 'img/' . $image->baseName. '.' . $image->extension;
+                $image->saveAs("../../frontend/web/".$model->nelayan_image);
+            }
+            $model->save();
             return $this->redirect(['view', 'id' => $model->nelayan_id]);
         }
 

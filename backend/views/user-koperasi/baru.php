@@ -12,7 +12,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel backend\models\SaldoHistorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Kopreasi Baru';
+$this->title = 'Kopreasi Belum Terverifikasi';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-koperasi-index">
@@ -30,6 +30,8 @@ $this->title = 'Kopreasi Baru';
         $Object1 = Kota::find()->all();
         $ObjectArray1 = ArrayHelper::map($Object1, 'kota_id', 'kota_name');
     ?>
+
+    <div id="map_canvas" class="mapping" style=" margin-bottom:20px;"></div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -108,4 +110,11 @@ $this->title = 'Kopreasi Baru';
             ],
         ],
     ]); ?>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initMap"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
+    <script type="text/javascript">
+      getKoperasiBaru();
+    </script>
 </div>

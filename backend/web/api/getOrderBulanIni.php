@@ -7,11 +7,16 @@
   $date_first = date('Y-m-1 00:00:00');
   $date_last = date('Y-m-'. $last . ' H:m:s');
 
-  $id = $_GET['id'];
-
-  $sql = "SELECT pesanan.*, user.*
-          FROM `order` as pesanan, user_pengguna as user
-          WHERE user.user_id = pesanan.order_user_id and pesanan.order_koperasi_location_id = $id and pesanan.order_date BETWEEN '$date_first' AND '$date_last'";
+  if (isset($_GET['id'])) {
+      $id = $_GET['id'];
+      $sql = "SELECT pesanan.*, user.*
+              FROM `order` as pesanan, user_pengguna as user
+              WHERE user.user_id = pesanan.order_user_id and pesanan.order_koperasi_location_id = $id and pesanan.order_date BETWEEN '$date_first' AND '$date_last'";
+  }else {
+      $sql = "SELECT pesanan.*, user.*
+              FROM `order` as pesanan, user_pengguna as user
+              WHERE user.user_id = pesanan.order_user_id and pesanan.order_date BETWEEN '$date_first' AND '$date_last'";
+  }
 
   $queryResult = $connect->query($sql);
   $result = array();
