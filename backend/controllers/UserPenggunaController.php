@@ -51,7 +51,7 @@ class UserPenggunaController extends Controller
     public function actionSaldo($id)
     {
         $query = SaldoHistory::find()->where(['saldo_user_id' => $id])->andWhere(['saldo_user_level' => 1]);
-        $count = count($query);
+        $count = $query->count();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $count,

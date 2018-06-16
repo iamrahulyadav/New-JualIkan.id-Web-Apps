@@ -13,7 +13,7 @@
   }else {
       $sql = "SELECT * FROM delivery WHERE delivery_time_depart BETWEEN '$date_first' AND '$date_last'";
   }
-  
+
   $queryResult = $connect->query($sql);
   $result = array();
   while($fetchData = $queryResult->fetch_assoc()){
@@ -27,7 +27,7 @@
 
   function getOrder($id){
       include 'connect.php';
-      $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id and pesanan.order_koperasi_location_id";
+      $sql = "SELECT pesanan.*, user.* FROM `order` as pesanan, user_pengguna as user WHERE user.user_id = pesanan.order_user_id and pesanan.order_koperasi_location_id and pesanan.order_id = $id";
       $queryResult = $connect->query($sql);
       $fetchData = $queryResult->fetch_assoc();
       $marker = array();

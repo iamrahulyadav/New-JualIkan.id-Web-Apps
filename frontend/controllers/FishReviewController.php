@@ -9,6 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+
+use frontend\models\UserKoperasi;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
 /**
  * FishReviewController implements the CRUD actions for FishReview model.
  */
@@ -35,13 +39,28 @@ class FishReviewController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FishReviewSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+          $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+          $idkoperasi = $object['koperasi_id'];
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+          $query = new Query;
+          $query->from('fish_review')
+                ->andWhere(['koperasi_id' => $idkoperasi]);
+          $total = $query->count();
+          $provider = new ActiveDataProvider([
+              'query' => $query,
+              'totalCount' => $total,
+              'pagination' => [
+                  'pageSize' => 10,
+              ],
+          ]);
+
+          $searchModel = new FishReviewSearch();
+          $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+          return $this->render('index', [
+              'searchModel' => $searchModel,
+              'dataProvider' => $provider,
+          ]);
     }
 
     /**

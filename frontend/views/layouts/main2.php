@@ -10,6 +10,9 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\CustomAppAsset;
 use common\widgets\Alert;
 
+$server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
+
+
 CustomAppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -36,9 +39,9 @@ CustomAppAsset::register($this);
           </div>
             <div class="main-menubar d-flex align-items-center">
             <nav>
-              <a href="http://localhost/jualikan.id/site/index/#home">Home</a>
-              <a href="http://localhost/jualikan.id/site/index/#service">Services</a>
-              <a href="http://localhost/jualikan.id/site/login">Login</a>
+              <a href="<?php echo $server?>site/index/#home">Home</a>
+              <a href="<?php echo $server?>site/index/#service">Services</a>
+              <a href="<?php echo $server?>site/login">Login</a>
             </nav>
           </div>
         </div>

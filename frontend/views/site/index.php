@@ -1,6 +1,17 @@
 <?php
 
+use backend\models\Fish;
+use common\models\UserPengguna;
+use backend\models\UserKoperasi;
+use backend\models\Kota;
+
+$fish = Fish::find()->all();
+$user = UserPengguna::find()->all();
+$koperasi = UserKoperasi::find()->all();
+$kota = Kota::find()->all();
 /* @var $this yii\web\View */
+
+$server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
 
 $this->title = 'Koperasi Jualikan.id';
 ?>
@@ -10,15 +21,15 @@ $this->title = 'Koperasi Jualikan.id';
 						<div class="row align-items-center justify-content-center">
 							<div class="banner-content col-lg-5 col-md-12">
 								<h1 class="text-uppercase">
-									Be a smart fish cooperative <br>
+									Jadilah Kopeasi Ikan yang Maju<br>
 								</h1>
 								<p>
-									Ini adalah penjelasan mengenai title
+									Bergabunglah dengan jualikan.id dan bangun kopearsi ikanmu menjadi koperasi ikan terdepan
 								</p>
-								<button class="primary-btn2 mt-20 text-uppercase ">Get Started<span class="lnr lnr-arrow-right"></span></button>
+								<button class="primary-btn2 mt-20 text-uppercase ">Daftar Disini<span class="lnr lnr-arrow-right"></span></button>
 							</div>
 							<div class="col-lg-7 d-flex align-self-end img-right">
-								<img src="http://localhost/jualikan.id/frontend/web/img/fisherman.png" style="width:112%; height:110%;">
+								<img src="<?php echo $server ?>frontend/web/img/fisherman.png" style="width:112%; height:110%;">
 							</div>
 						</div>
 				</div>
@@ -112,19 +123,19 @@ $this->title = 'Koperasi Jualikan.id';
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-3 col-md-6 single-fact">
-							<h2 class="counter">2536</h2>
+							<h2 class="counter"><?php echo count($user) ?></h2>
 							<p class="text-uppercase">Pengguna</p>
 						</div>
 						<div class="col-lg-3 col-md-6 single-fact">
-							<h2 class="counter">6784</h2>
+							<h2 class="counter"><?php echo count($koperasi) ?></h2>
 							<p class="text-uppercase">Koperasi</p>
 						</div>
 						<div class="col-lg-3 col-md-6 single-fact">
-							<h2 class="counter">1059</h2>
+							<h2 class="counter"><?php echo count($fish) ?></h2>
 							<p class="text-uppercase">Ikan</p>
 						</div>
 						<div class="col-lg-3 col-md-6 single-fact">
-							<h2 class="counter">2239</h2>
+							<h2 class="counter"><?php echo count($kota) ?></h2>
 							<p class="text-uppercase">Kota</p>
 						</div>
 					</div>

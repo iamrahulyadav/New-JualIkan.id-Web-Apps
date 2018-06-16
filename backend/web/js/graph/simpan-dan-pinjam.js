@@ -7,7 +7,7 @@ function displaySimpanPinjam(id){
     $.ajax({
         type : "GET",
         data : "",
-        url : "http://localhost/jualikan.id/backend/web/api/graph/simpan-pinjam.php?id=" + id,
+        url : "http://ishom.jagopesan.com/jualikan.id/backend/web/api/graph/simpan-pinjam.php?id=" + id,
         success : function(result){
 
             var resultObj = JSON.parse(result);

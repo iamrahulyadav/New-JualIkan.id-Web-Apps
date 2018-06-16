@@ -16,9 +16,15 @@
   $deliveryResult = $connect->query($sql);
   $delivery = $deliveryResult->fetch_assoc();
 
-  $resultFinal["order"] = $resultLocation;
-  $resultFinal["driver"] = $resultDriver;
-  $resultFinal["koperasi"] = $koperasi;
+  $arrayOrder = array();
+  $array = json_decode($delivery['delivery_order_id']);
+  for ($i=0; $i < count($array); $i++) {
+      $arrayOrder[] = order($array[$i]);
+  }
+
+  $resultFinal["order"] = $arrayOrder;
+  $resultFinal["driver"] = driver($delivery);
+  $resultFinal["koperasi"] = koperasi($delivery);;
 
   echo json_encode($resultFinal, JSON_PRETTY_PRINT);
 
@@ -41,6 +47,20 @@
   }
 
   function koperasi($obj){
-      $result['id'] = $
+      $result['id'] = $obj['koperasi_id'];
+      $result['name'] = $obj['koperasi_name'];
+      $result['address'] = $obj['koperasi_address'];
+      $result['lat'] = $obj['koperasi_lat'];
+      $result['lng'] = $obj['koperasi_lng'];
+
+      return $result;
+  }
+
+  function driver($obj){
+      $result['id'] = $obj['driver_id'];
+      $result['name'] = $obj['driver_full_name'];
+      $result['device_id'] = $obj['driver_device_id'];
+
+      return $result;
   }
  ?>

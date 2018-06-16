@@ -7,7 +7,12 @@ use common\models\UserNelayan;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\DatePicker;
 
-$Nelaayan = UserNelayan::find()->all();
+use backend\models\UserKoperasi;
+
+$koperasi = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+$idKoperasi = $koperasi->koperasi_id;
+
+$Nelaayan = UserNelayan::find()->where(['nelayan_cooperative_id' => $idKoperasi])->all();
 $NelayanArray  = ArrayHelper::map($Nelaayan, 'nelayan_id', 'nelayan_full_name');
 /* @var $this yii\web\View */
 /* @var $model common\models\KoperasiSimpanan */

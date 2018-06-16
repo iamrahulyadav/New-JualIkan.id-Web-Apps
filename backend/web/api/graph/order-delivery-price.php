@@ -1,7 +1,11 @@
 <?php
     include '../connect.php';
 
-    $id = $_GET['id'];
+    if (isset($_GET['id'])) {
+      $id = $_GET['id'];
+    }else {
+      $id = 0;
+    }
 
     $month = Date('m');
     $last  = date('t');
@@ -23,7 +27,11 @@
         $obj["id"] = $i;
         $obj["date"] = $date;
 
-        $sql1 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and (delivery_status = 0 or delivery_status = 1)";
+        if ($id == 0) {
+          $sql1 = "SELECT * FROM `delivery` WHERE (delivery_time_depart like '%{$date}%') and (delivery_status = 0 or delivery_status = 1)";
+        }else {
+          $sql1 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and (delivery_status = 0 or delivery_status = 1)";
+        }
         $res1 = $connect->query($sql1);
 
         $tot1 = 0;
@@ -35,7 +43,12 @@
         $obj["delivery_dalam_proses_text"] = "Jumlah pengiriman dalam proses";
         $obj["delivery_dalam_proses"] = $tot1;
 
-        $sql2 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and delivery_status = 2";
+        if ($id == 0) {
+          # code...
+          $sql2 = "SELECT * FROM `delivery` WHERE (delivery_time_depart like '%{$date}%') and delivery_status = 2";
+        }else {
+          $sql2 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and delivery_status = 2";
+        }
         $res2 = $connect->query($sql2);
         $row2 = $res2->num_rows;
 
@@ -47,8 +60,12 @@
 
         $obj["delivery_sukses_text"] = "Jumlah pengiriman yang sukses";
         $obj["delivery_sukses"] = $tot2;
-
-        $sql3 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and delivery_status = 2";
+        
+        if ($id == 0){
+            $sql3 = "SELECT * FROM `delivery` WHERE (delivery_time_depart like '%{$date}%') and delivery_status = 3";
+        }else {
+            $sql3 = "SELECT * FROM `delivery` WHERE (delivery_order_koperasi_id = '$id' and delivery_time_depart like '%{$date}%') and delivery_status = 3";
+        }
         $res3 = $connect->query($sql3);
         $row3 = $res3->num_rows;
 
@@ -59,7 +76,7 @@
         }
 
         $obj["delivery_gagal_text"] = "Jumlah pengiriman yang gagal";
-        $obj["delivery_gagal"] = $tot2;
+        $obj["delivery_gagal"] = $tot3;
 
         $response[] = $obj;
     }

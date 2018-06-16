@@ -15,7 +15,6 @@ $this->title = 'Daftar Pengiriman';
 $this->params['breadcrumbs'][] = $this->title;
 
 $server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
-$object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
 
 ?>
 <div class="delivery-index">

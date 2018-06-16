@@ -53,18 +53,22 @@ class FishController extends Controller
     public function actionTerlaris()
     {
         $searchModel = new FishSearch();
+      
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idKoperasi = $object->koperasi_id;
 
         $query = new Query;
         $query->select(['f.fish_id as fish_id', 'f.fish_price as fish_price', 'f.fish_koperasi_id as fish_koperasi_id', 'f.fish_name as fish_name', 'f.fish_image as fish_image', 'SUM(c.cart_fish_qty) as fish_qty'])
               ->from('cart c')
               ->join('LEFT JOIN', 'fish f', 'f.fish_id = c.cart_fish_id')
               ->where(['c.cart_status' => 1])
+              ->andWhere(['f.fish_koperasi_id' => $idKoperasi])
               ->limit(10)
               ->groupBy('c.cart_fish_id', 'c.cart_fish_qty')
               ->orderBy(['c.cart_fish_qty' => SORT_DESC]);
 
         // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
-        $count = count($query);
+        $count = $query->count();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $count,

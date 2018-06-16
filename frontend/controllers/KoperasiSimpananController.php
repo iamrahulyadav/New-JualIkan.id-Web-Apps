@@ -1,5 +1,4 @@
 <?php
-
 namespace frontend\controllers;
 
 use Yii;
@@ -38,17 +37,8 @@ class KoperasiSimpananController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new KoperasiSimpananSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionIndexbulan()
-    {
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
 
         $month = Date('m');
         $last  = date('t');
@@ -56,8 +46,38 @@ class KoperasiSimpananController extends Controller
         $firstDate = Date('Y-'. $month . '-1');
         $lastDate = Date('Y-'. $month . '-' . $last);
 
-        $query = KoperasiSimpanan::find()->where(['between', 'simpanan_date', $firstDate, $lastDate]);
-        $count = count($query);
+        $query = KoperasiSimpanan::find()->andWhere(['simpanan_koperasi_id' => $idkoperasi]);
+        $count = $query->count();
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $searchModel = new KoperasiSimpananSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $provider,
+        ]);
+    }
+
+    public function actionIndexbulan()
+    {
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idkoperasi = $object['koperasi_id'];
+
+        $month = Date('m');
+        $last  = date('t');
+
+        $firstDate = Date('Y-'. $month . '-1');
+        $lastDate = Date('Y-'. $month . '-' . $last);
+
+        $query = KoperasiSimpanan::find()->where(['between', 'simpanan_date', $firstDate, $lastDate])->andWhere(['simpanan_koperasi_id' => $idkoperasi]);
+        $count = $query->count();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $count,
