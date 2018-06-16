@@ -12,7 +12,29 @@ use backend\models\UserKoperasi;
 $this->title = "Pengriman ID-" . $model->delivery_code;
 $this->params['breadcrumbs'][] = ['label' => 'Deliveries', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$server  = "http://" . $_SERVER['HTTP_HOST'] . "/jualikan.id/";
 ?>
+
+<style>
+
+#progressbar1 {
+    width: 100%;
+    background-color: #CACED2;
+}
+#progressbar {
+    width: 10%;
+    height: 30px;
+    background-color: #3c8dbc;
+}
+h4 {
+  font-size: 14px;
+}
+h3 {
+  font-size: 24px;
+}
+</style>
+
 <div class="delivery-view">
     <p>
         <!-- <?= Html::a('Update', ['update', 'id' => $model->delivery_id], ['class' => 'btn btn-primary']) ?> -->
@@ -25,6 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+
+    <h3 id="titleprogressbar">Loading....</h3>
+    <div id="progressbar1">
+        <div id="progressbar"></div>
+    </div>
+    <h4 id="valueBar">0%</h4> 
+    <div id="map_tracking" class="mapping" style="margin-bottom:20px;"></div>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -133,5 +162,26 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+  
+    <canvas id="carcanvas"  width="1" height="1"></canvas>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script>
+        // TODO: Replace with your project's customized code snippet
+        var config = {
+          apiKey: "AIzaSyBQ3kToZHUYfdOGbl7x-m_v54CO701eKk8",
+          authDomain: "jualikan-1515261954213.firebaseapp.com",
+          databaseURL: "https://jualikan-1515261954213.firebaseio.com",
+          projectId: "jualikan-1515261954213",
+          storageBucket: "jualikan-1515261954213.appspot.com",
+          messagingSenderId: "724156806372"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initialize"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="<?php echo $server?>backend/web/js/vrp/trackRealTimeFront.js" ></script>
+    <script type="text/javascript">
+      getDelivery("<?php echo $model->delivery_id ?>");
+    </script>
 
 </div>

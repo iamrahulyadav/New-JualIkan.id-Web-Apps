@@ -92,7 +92,6 @@ class OrderController extends Controller
         $total = $query->count();
 
         // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
-        $count = count($query);
         // echo json_encode($query);
         // echo $count;
 
@@ -135,7 +134,6 @@ class OrderController extends Controller
           ->where(['between', 'order_date', $firstDate, $lastDate])
           ->orderBy(['order_date' => SORT_DESC]);
         $total = $query->count();
-        $count = count($query);
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $total,

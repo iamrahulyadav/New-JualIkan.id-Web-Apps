@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Delivery;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\UserDriverSearch */
@@ -61,8 +62,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         return "<p style='color:green;'>Aktif</p>";
                     }
                     elseif ($data['driver_status'] == 2){
+                        $delivery = Delivery::find()
+                          ->where(['delivery_driver_id' => $data['driver_id'], 'delivery_status' => 1])->one();
+                        
                         return "<p style='color:#337ab7;'>Dalam Proses Pengiriman</p><p>".
-                        Html::a('Tracking Driver', ['delivery/track', 'id' => $data['driver_id']],
+                        Html::a('Tracking Driver', ['delivery/view', 'id' => $delivery->delivery_id],
                         [
                             'style' => 'width:100%',
                             'class' => 'btn btn-success',
