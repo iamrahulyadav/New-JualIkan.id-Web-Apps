@@ -19,26 +19,6 @@
         $radiusDistance = 50000;
 
         //menyimpan lokasi koperasi dengan radius xx km
-        $distribtution = array();
-
-        $sqlDistribution = "SELECT * FROM user_koperasi";
-        $resultDistribution = $connect->query($sqlDistribution);
-        while ($row = $resultDistribution->fetch_assoc()) {
-            $distance = countDistance(floatval($lat), floatval($lng), floatval($row['koperasi_lat']), floatval($row['koperasi_lng']));
-//             if ($distance < $radiusDistance) {
-            $distribtution[] = array(
-                'distance' => countDistance(floatval($lat), floatval($lng), floatval($row['koperasi_lat']), floatval($row['koperasi_lng'])),
-                'id_location' => $row['koperasi_id']
-            );
-            // }
-        }
-
-        // usort($distribtution, function($a, $b){
-        //     if (intval($a['distance']) == intval($b['distance'])) {
-        //         return 0;
-        //     }
-        //     return (intval($a['distance']) < intval($b['distance'])) ? -1 : 1;
-        // });
 
         $promo = array();
         $sqlPromo = "SELECT * FROM promo";
@@ -52,14 +32,11 @@
 
         //ambil data kategori terbaru
         $fish = array();
-        foreach ($distribtution as $koperasi) {
-            $id_location = $koperasi['id_location'];
-            $sqlFish = "SELECT * FROM fish WHERE fish_koperasi_id = '$id_location' ORDER BY fish_date DESC LIMIT 0, 4";
-            $resultFish = $connect->query($sqlFish);
-            while ($row1 = $resultFish->fetch_assoc()) {
-                if(count($fish) < 4){
-                    $fish[] = $row1;
-                }
+        $sqlFish = "SELECT fish.* FROM fish as fish ORDER BY fish.fish_date DESC LIMIT 0, 4";
+        $resultFish = $connect->query($sqlFish);
+        while ($row1 = $resultFish->fetch_assoc()) {
+            if(count($fish) < 4){
+                $fish[] = $row1;
             }
         }
 
@@ -80,17 +57,12 @@
             //id kategori ikan
             $id = $row['fish_category_id'];
 
-            foreach ($distribtution as $koperasi) {
-                $id_location = $koperasi['id_location'];
-                $sqlFish = "SELECT * FROM fish WHERE fish_koperasi_id = '$id_location' AND fish_category_id = '$id' ORDER BY fish_date DESC LIMIT 0, 4";
-                $resultFish = $connect->query($sqlFish);
-                while ($row1 = $resultFish->fetch_assoc()) {
-                    if(count($fish) < 4){
-                        $fish[] = $row1;
-                    }
-                }
+            $sqlFish = "SELECT fish.* FROM fish as fish WHERE fish.fish_category_id = '$id' ORDER BY fish.fish_date DESC LIMIT 0, 4";
+            $resultFish = $connect->query($sqlFish);
+            while ($row1 = $resultFish->fetch_assoc()) {
+                  $fish[] = $row1;
             }
-
+          
             $fish_cat[] = array(
                 'fish_category_id' => $row['fish_category_id'],
                 'fish_category_name' => $row['fish_category_name'],

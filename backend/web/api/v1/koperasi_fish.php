@@ -3,14 +3,18 @@
 
     $response = array();
 
-    if (isset($_POST['fish_id'])) {
+    if (isset($_POST['koperasi_id'])) {
 
         //do something when right
-        $fish_id = $_POST['fish_id'];
+        $koperasi_id = $_POST['koperasi_id'];
 
         $fish = array();
 
-        $sqlFish = "SELECT * FROM fish WHERE fish_id = '$fish_id'";
+        if (intval($koperasi_id) == 0) {
+            $sqlFish = "SELECT * FROM fish ORDER BY fish_date DESC";
+        }else {
+            $sqlFish = "SELECT * FROM fish WHERE fish_koperasi_id = '$koperasi_id' ORDER BY fish_date DESC";
+        }
         $resultFish = $connect->query($sqlFish);
         while ($row = $resultFish->fetch_assoc()) {
 
@@ -41,35 +45,24 @@
           //fish rating
           $rating = 0;
           $total_rating = 0;
-          $reviews = array();
-          $sql1 = "SELECT review.*, user.* FROM fish_review as review, user_pengguna as user WHERE review.fish_id = '$fish_id' and user.user_id = review.user_id";
+          $fish_id = $row['fish_id'];
+          $sql1 = "SELECT * FROM fish_review WHERE fish_id = '$fish_id'";
           $result1 = $connect->query($sql1);
           while ($row1 = $result1->fetch_assoc()) {
             $total_rating++;
             $rating = (int)$rating + (int)$row1["review_jumalh"];
-            $reviews[] = $row1;
           }
 
           if ($total_rating != 0) {
               $rating = $rating/$total_rating;
           }
-           
-          $idkoperasi = $row['fish_koperasi_id'];
-          $sqlKoperasi = "SELECT koperasi.*, level.* FROM user_koperasi as koperasi, koperasi_level as level WHERE level.koperasi_level_id = koperasi.koperasi_level_id and koperasi_id = '$idkoperasi'";
-          $resultKoperasi = $connect->query($sqlKoperasi);
-          $rowkoperasi = $resultKoperasi->fetch_assoc();
-          
-          $koperasi['id'] = $rowkoperasi['koperasi_id'];
-          $koperasi['image'] = $rowkoperasi['kopreasi_image'];
-          $koperasi['name'] = $rowkoperasi['koperasi_name'];
-          $koperasi['status'] = $rowkoperasi['koperasi_level_name'];
-            
-          $fish = array(
+
+          $fish[] = array(
               'fish_id' => $row['fish_id'],
               'fish_image' => $row['fish_image'],
               'fish_name' => $row['fish_name'],
               'fish_price' => $row['fish_price'],
-              'fish_koperasi' => $koperasi,
+              'fish_koperasi_id' => $row['fish_koperasi_id'],
               'fish_category_id' => $fish_category_id,
               'fish_condition_id' => $fish_condition_id,
               'fish_size_id' => $fish_size_id,
@@ -78,13 +71,12 @@
               'fish_total_rating' => $total_rating,
               'fish_description' => $row['fish_description'],
               'fish_date' => $row['fish_date'],
-              'fish_review' => $reviews,
           );
         }
 
         $response['response'] = 200;
         $response['status'] = true;
-        $response['message'] = "Berhasil Ambil kategori";
+        $response['message'] = "Berhasil amnbil ikan koperasi";
         $response['data'] = $fish;
 
     }else {

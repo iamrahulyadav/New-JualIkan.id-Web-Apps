@@ -43,7 +43,7 @@
                 $sql1 = "SELECT * FROM user_koperasi WHERE koperasi_id = '$koperasi_id'";
                 $result1 = $connect->query($sql1);
                 $row1 = $result->num_rows;
-
+              
                 $distance = countDistance(floatval($lat), floatval($lng), floatval($row1['koperasi_lat']), floatval($row1['koperasi_lng']));
 
                 if ($maxDistance < $distance) {
@@ -71,12 +71,15 @@
                     if (!$checkStatusKoperasi) {
                         $response['response'] = 200;
                         $response['status'] = false;
-                        $response['message'] = "Koperasi ikan sangat jauh dengan lokasi anda";
-                    }
-                    if (!$checkStockIkan) {
+                        $response['message'] = "Anda hanya dapat memesan ikan pada 1 koperasi saja";
+                    }else if (!$checkStockIkan) {
                       $response['response'] = 200;
                       $response['status'] = false;
                       $response['message'] = "Mohon maaf stock ikan habis";
+                    }else {
+                      $response['response'] = 200;
+                      $response['status'] = false;
+                      $response['message'] = "Koperasi terlalu jauh dari lokasi anda";
                     }
                 }
             }else {
