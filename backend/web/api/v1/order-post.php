@@ -86,7 +86,11 @@
                 $sql = "UPDATE `cart` SET `cart_status` = 1 WHERE `cart_id` = '$cart_id' and `cart_user_id` = '$postIdUser'";
                 $connect->query($sql);
             }
-
+          
+            if($postPaymentType == "3"){
+                potong_saldo($postIdUser, (int) $postTotalPembayaran);
+            }
+          
             $response['response'] = 200;
             $response['status'] = true;
             $response['message'] = "Pemesanan Berhasil";
@@ -105,5 +109,14 @@
     }
 
     echo json_encode($response, JSON_PRETTY_PRINT);
-
+     
+    function potong_saldo($id_user, $biaya){
+        $sqlUser = "SELECT * FROM user_pengguna WHERE user_id = '$id_user'";
+        $result = $connect->query($sqlUser);
+        $user = $result->fetch_assoc();
+        $saldo_sekarang = (int) $user['user_saldo'] - (int) $biaya;
+      
+        $sqlUpdateSaldo = "UPDATE `user_pengguna` SET `user_saldo` = '$saldo_sekarang' WHERE `user_id` = '$id_user'";
+        $connect->query($sqlUpdateSaldo);
+    }
 ?>

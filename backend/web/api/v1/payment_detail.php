@@ -36,7 +36,7 @@
             $keranjang_items[] = $object;
         }
 
-        $sql = "SELECT * FROM delivery_time WHERE delivery_time_koperasi id = '$koperasi_id'";
+        $sql = "SELECT * FROM delivery_time WHERE delivery_time_koperasi_id = '$koperasi_id'";
         $result = $connect->query($sql);
 
         while ($row = $result->fetch_assoc()){
