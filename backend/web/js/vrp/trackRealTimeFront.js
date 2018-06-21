@@ -140,7 +140,7 @@ var markerDriver;
 function displayDriver(){
     var database = firebase.database();
     var ref = database.ref();
-    var id_driver = lokasiDriver.device_id;
+    var id_driver = lokasiDriver.id;
     ref.on("value", function(snapshot){
         console.log(snapshot.val().Tracking[id_driver]);
         var obj = snapshot.val().Tracking[id_driver];

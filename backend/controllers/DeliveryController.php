@@ -108,7 +108,6 @@ class DeliveryController extends Controller
 
         $query = Delivery::find()->where(['between', 'delivery_time_depart', $firstDate, $lastDate])->orderBy(['delivery_time_depart' => SORT_DESC]);
         $total = $query->count();
-        $count = count($query);
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $total,

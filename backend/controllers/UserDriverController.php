@@ -152,8 +152,6 @@ class UserDriverController extends Controller
             ],
         ]);
 
-        // echo count($query);
-
         return $this->render('saldo', [
             // 'searchModel' => $searchModel,
             'model' => $this->findModel($id),
