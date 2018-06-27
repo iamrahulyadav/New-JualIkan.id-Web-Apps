@@ -7,7 +7,6 @@
     $time = date("H:i:s");
 
     $statusTime = false;
-    $messageTime = "Waktu buka order (05:00 - 17:00)";
 
     if (isset($_POST['id_user'])) {
 
@@ -56,7 +55,9 @@
 
             $objTime['message'] = "Batas waktu pemesanan : " . $delivTime;
             $delivery_time[] = $objTime;
-        }
+        }      
+      
+        $messageTime = "Waktu buka order (".  reduce_time($delivery_time[0]['delivery_time_start']) . " - " . reduce_time($delivery_time[count($delivery_time) - 1]['delivery_time_start']) . ")";
 
         $sql = "SELECT * FROM payment_type";
         $result = $connect->query($sql);
@@ -68,6 +69,12 @@
         $sql = "SELECT * FROM user_koperasi WHERE koperasi_id = '$koperasi_id'";
         $result = $connect->query($sql);
         $row = $result->fetch_assoc();
+      
+        $user = array();
+        $sqlUser = "SELECT user_id, user_full_name, user_image, user_saldo FROM user_pengguna WHERE user_id = '$id_user'";
+        $resultUser = $connect->query($sqlUser);
+        $user = $resultUser->fetch_assoc();
+        $saldoUser = (int) $user['user_saldo'];
 
         $koperasi['id'] = $row['koperasi_id'];
         $koperasi['nama'] = $row['koperasi_name'];
@@ -77,12 +84,19 @@
         $keranjang['items'] = $keranjang_items;
         $keranjang['total'] = $total;
         $keranjang['koperasi'] = $koperasi;
+      
+        if($total < $saldoUser){
+            $user['check'] = true;
+        }else {
+            $user['check'] = false;
+        }
 
         $response['response'] = 200;
         $response['status'] = true;
         $response['message'] = "Berhasil menggubah data keranjang";
         $response['statusOrder'] = $statusTime;
         $response['statusMessage'] = $messageTime;
+        $response['user'] = $user;
         $response['cart'] = $keranjang;
         $response['delivery_time'] = $delivery_time;
         $response['payment_type'] = $payment_type;
@@ -96,4 +110,10 @@
     }
 
     echo json_encode($response, JSON_PRETTY_PRINT);
+
+    function reduce_time($time){
+        $delivTime = strtotime ( '-1 hour' , strtotime ( $time ) ) ;
+        $delivTime = date ( 'H:i:s' , $delivTime );
+        return $delivTime;
+    }
 ?>

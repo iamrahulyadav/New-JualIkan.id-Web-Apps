@@ -18,12 +18,13 @@
       $driver['email'] = $row['driver_email'];
       $driver['phone'] = $row['driver_phone'];
       $driver['saldo'] = (int)$row['driver_saldo'];
+      $driver['order_total'] = (int)countDelivery($idDriver);
       $driver['status'] = (int)$row['driver_status'];
 
       if ($driver['status'] == 1) {
           $driver['text_status'] = "Aktif";
       }else if ($driver['status'] == 2) {
-          $driver['text_status'] = "Delivery";
+          $driver['text_status'] = "Sedang Delivery";
       }else {
           $driver['text_status'] = "Tidak Aktif";
       }
@@ -40,6 +41,8 @@
       $last_deliver['date_time'] = $row2['delivery_time_depart'];
       $last_deliver['distance'] = distanceFormat((int)$row2['delivery_travel_distance']);
       $last_deliver['time'] = timeFormat((int)$row2['delivery_travel_time']);
+      $last_deliver['status'] = (int)$row2['delivery_status'];
+    
 
       if ($row2['delivery_id'] != null) {
           $menu['last_delivery'] = $last_deliver;
@@ -78,6 +81,14 @@
               return $secs . " Detik";
           }
       }
+  }
+
+  function countDelivery($id_user){
+      include '../../connect.php';
+      $sql = "SELECT count(*) as total FROM `delivery` WHERE (delivery_status = '1') and (`delivery_driver_id` = '$id_user')";
+      $result = $connect->query($sql);
+      $data = $result->fetch_assoc();
+      return $data['total'];
   }
 
   function distanceFormat($seconds){

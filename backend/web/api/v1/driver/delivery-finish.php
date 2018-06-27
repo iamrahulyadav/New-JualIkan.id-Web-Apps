@@ -11,20 +11,21 @@ if (isset($_POST['driver_id']) && isset($_POST['delivery_id'])) {
 
     $sql_delivery = "UPDATE delivery SET
             delivery_status = 2
-            WHERE delivery_id = $delivery_id";
+            WHERE delivery_id = $delivery_id and delivery_status = 1";
 
     $sqlDriver = "SELECT * FROM user_driver WHERE driver_id = $driver_id";
     $result1 = $connect->query($sqlDriver);
     $driver = $result1->fetch_assoc();
 
-    $sqlDelivery = "SELECT * FROM delivery WHERE delivery_id = $delivery_id";
+    $sqlDelivery = "SELECT * FROM delivery WHERE delivery_id = $delivery_id and delivery_status = 1";
     $result = $connect->query($sqlDelivery);
     $delivery = $result->fetch_assoc();
-
-    $payment = (int) $delivery['delivery_payment'];
-    $title = "Pengiriman ID-" . $delivery['delivery_code'];
-
-    if ($connect->query($sql_delivery)) {
+  
+    if ($delivery != null) {
+        $connect->query($sql_delivery);
+    
+        $payment = (int) $delivery['delivery_payment'];
+        $title = "Pengiriman ID-" . $delivery['delivery_code'];
 
         $saldoSekarang = (int)$driver['driver_saldo'];
         $saldoSekarang = $saldoSekarang + $payment;
@@ -56,7 +57,7 @@ if (isset($_POST['driver_id']) && isset($_POST['delivery_id'])) {
     }else {
         $response['response'] = 200;
         $response['status'] = false;
-        $response['message'] = "Gagal mengambil delivery";
+        $response['message'] = "Delivery tidak ditemukan";
     }
 
 }else {

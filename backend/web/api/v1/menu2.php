@@ -18,8 +18,11 @@
         //jarak koperasi sekitar => 50 km
         $radiusDistance = 50000;
 
-        //menyimpan lokasi koperasi dengan radius xx km
-
+        $user = array();
+        $sqlUser = "SELECT user_id, user_full_name, user_image, user_saldo FROM user_pengguna WHERE user_id = '$user_id'";
+        $resultUser = $connect->query($sqlUser);
+        $user = $resultUser->fetch_assoc(); 
+        
         $promo = array();
         $sqlPromo = "SELECT * FROM promo";
         $resultPromo = $connect->query($sqlPromo);
@@ -74,6 +77,7 @@
         $response['status'] = true;
         $response['message'] = "Berhasil Ambil Menu";
         $response['data'] = array(
+            'user' => $user,
             'promo' => $promo,
             'fish_cat' => $fish_cat,
             'order_total' => (int)countOrderDalamProses($user_id),

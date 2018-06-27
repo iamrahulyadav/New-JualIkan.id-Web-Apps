@@ -17,6 +17,7 @@
           $last_deliver['date_time'] = $row2['delivery_time_depart'];
           $last_deliver['distance'] = distanceFormat((int)$row2['delivery_travel_distance']);
           $last_deliver['time'] = timeFormat((int)$row2['delivery_travel_time']);
+          $last_deliver['status'] = (int)$row2['delivery_status'];
           $delivery[] = $last_deliver;
       }
 

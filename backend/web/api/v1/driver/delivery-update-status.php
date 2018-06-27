@@ -13,14 +13,10 @@ if (isset($_POST['driver_id']) && isset($_POST['status'])) {
     $response['response'] = 200;
     $response['status'] = true;
 
-    if ($status == "1") {
-        $response['message'] = "Anda sedang bekerja";
-    }else {
-        $response['message'] = "Anda sedang tidak bekerja";
-    }
-
     if ($status == 1) {
         $response['text_status'] = "Aktif";
+    }else if($status == 2) {
+        $response['text_status'] = "Delivery";
     }else {
         $response['text_status'] = "Tidak Aktif";
     }
