@@ -5,7 +5,7 @@ $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->iden
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initialize"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- <script src="http://localhost/jualikan.id/backend/web/js/setMapsnCountVRP.js" ></script> -->
-<script src="http://localhost/jualikan.id/backend/web/js/vrp/countVrp.js" ></script>
+<script src="http://ishom.jagopesan.com/jualikan.id/backend/web/js/vrp/countVrp.js" ></script>
 <!-- <script src="http://localhost/jualikan.id/backend/web/js/setBeforeVRPMap.js" ></script> -->
 
 <style>

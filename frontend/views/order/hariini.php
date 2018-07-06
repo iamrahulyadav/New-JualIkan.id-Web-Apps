@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 #asd{
   font-size: 20px;
   margin-top: -5px;
+  visibility: hidden;
 }
 </style>
 <div class="order-index">
@@ -40,6 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div id="MyClockDisplay" class="clock btn btn-success"></div>
 
     <?php
+    $object2 = Order::find()->where(['order_status' => 1])->all();
+    $jumlah = count($object2);
     if ($jumlah != 0) {
     ?>
     <?= Html::a('Generate Order', ['generate2'], ['class' => 'btn btn-success', 'id' => 'asd']) ?>
@@ -55,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
         $Object1 = UserPengguna::find()->all();
         $objectArray1 = ArrayHelper::map($Object1, 'user_id', 'user_full_name');
 
-        $object2 = Order::find()->where(['order_status' => 1])->all();
 
         $DeliveryTime = DeliveryTime::find()->all();
         $arrayDeliveryTime = ArrayHelper::map($DeliveryTime, 'delivery_time_id', 'delivery_time_name');
@@ -268,8 +270,10 @@ $this->params['breadcrumbs'][] = $this->title;
             var time1 = h1 + ":" + 30 + ":" + "00";
             document.getElementById("MyClockDisplay").innerText = time;
             document.getElementById("MyClockDisplay").textContent = "Jam " + time;
-
-            checkWaktu(time1, time2);
+           
+            if(arrayWaktu.length != 0){
+                checkWaktu(time1, time2);
+            }
             setTimeout(showTime, 1000);
         }
 
@@ -282,15 +286,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             }
             if(bol){
-                generate.style.visibility = 'visible';
+                document.getElementById("asd").style.visibility = 'visible';
             }else {
-                generate.style.visibility = 'hidden';
+                document.getElementById("asd").style.visibility = 'hidden';
             }
         }
-
-        arrayWaktu.push("01:30:00");
-
-        showTime();
+        
+        function getTimeWindows(id){
+             $.ajax({
+                type  : "GET",
+                data  : "",
+                url   : "../backend/web/api/getTimeWindows.php?id=" + id,
+                success : function(result){
+                    var resultObj = JSON.parse(result);
+                    $.each(resultObj, function(key, value){
+                        console.log(value.delivery_time_start);
+                        arrayWaktu.push(value.delivery_time_start);
+                        arrayIdWaktu.push(value.delivery_time_id);
+                    });
+                    showTime();
+                  }
+            });
+        }
+        getTimeWindows("<?php echo $object->koperasi_id ?>");
     </script>
 
 </div>

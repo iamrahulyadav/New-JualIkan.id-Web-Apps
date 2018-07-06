@@ -3,7 +3,7 @@
 var arrayLocation = [];
 var weightSumOrder = 0;
 
-var server = "http://localhost/";
+var server = "http://ishom.jagopesan.com/";
 
 //driver
 var arrayDriver = [];
@@ -1139,8 +1139,8 @@ function displayMapsVrp(arrayVRPDistance){
     );
     var infoWindow = new google.maps.InfoWindow(), marker, i;
     var bounds = new google.maps.LatLngBounds();
-    var imageOrder = "http://localhost/jualikan.id/frontend/web/img/order_green_marker.png";
-    var imageKoperasi = "http://localhost/jualikan.id/frontend/web/img/icon_company.png";
+    var imageOrder = server + "jualikan.id/frontend/web/img/order_green_marker.png";
+    var imageKoperasi = server + "jualikan.id/frontend/web/img/icon_company.png";
 
     //add marker koperasi
     var posisi_koperasi = new google.maps.LatLng(arrayLocation[0].lat, arrayLocation[0].lng);
@@ -1153,7 +1153,7 @@ function displayMapsVrp(arrayVRPDistance){
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
             infoWindow.setContent("<div style='float:left; margin-bottom:0px;'>" +
-                                  "<img src=http://localhost/jualikan.id/" + arrayLocation[0].image + " style='width:52px; height:52px'/></div><div style='float:right; margin-left:8px; margin-bottom:0px; width:200px;'>"+
+                                  "<img src=http://ishom.jagopesan.com/jualikan.id/" + arrayLocation[0].image + " style='width:52px; height:52px'/></div><div style='float:right; margin-left:8px; margin-bottom:0px; width:200px;'>"+
                                   "<h4 style='margin-top:0px;'><b>" + arrayLocation[0].name +"</b></h4>"+
                                   "<p style='margin-top:-10px;'>" + arrayLocation[0].address + "</p></div>");
                                   // "<p style='margin-top:-10px;'>Berat Order : " + contentDialog[x][3] + " Kg | Biaya : Rp. " + contentDialog[x][4] + "</p></div>");
@@ -1615,8 +1615,8 @@ function displayMapsVrpAll(arrayVRPDistance, kode){
     );
     var infoWindow = new google.maps.InfoWindow(), marker, i;
     var bounds = new google.maps.LatLngBounds();
-    var imageOrder = "http://localhost/jualikan.id/frontend/web/img/order_green_marker.png";
-    var imageKoperasi = "http://localhost/jualikan.id/frontend/web/img/icon_company.png";
+    var imageOrder = server + "jualikan.id/frontend/web/img/order_green_marker.png";
+    var imageKoperasi = server + "jualikan.id/frontend/web/img/icon_company.png";
 
     //add marker koperasi
     var posisi_koperasi = new google.maps.LatLng(arrayLocation[0].lat, arrayLocation[0].lng);

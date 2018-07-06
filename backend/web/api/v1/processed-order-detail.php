@@ -26,12 +26,13 @@
             $idkeranjang = $arrayKeranjang[$i];
             $keranjangObj = array();
 
-            $sql = "SELECT keranjang.*, ikan.* FROM cart as keranjang, fish as ikan WHERE keranjang.cart_id = '$idkeranjang' and ikan.fish_id = keranjang.cart_fish_id";
+            $sql = "SELECT keranjang.*, ikan.*, koperasi.* FROM cart as keranjang, fish as ikan, user_koperasi as koperasi WHERE keranjang.cart_id = '$idkeranjang' and ikan.fish_id = keranjang.cart_fish_id and koperasi.koperasi_id = ikan.fish_koperasi_id";
             $result = $connect->query($sql);
             $row1 = $result->fetch_assoc();
 
             $keranjangObj['id'] = $row1['cart_id'];
             $keranjangObj['fish_id'] = $row1['cart_fish_id'];
+            $keranjangObj['koperasi_id'] = $row1['koperasi_id'];
             $keranjangObj['image'] = $row1['fish_image'];
             $keranjangObj['name'] = $row1['fish_name'];
             $keranjangObj['price'] = (int)$row1['fish_price'];

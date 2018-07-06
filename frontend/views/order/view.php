@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="order-view">
     <div id="map_canvas" class="mapping" style="margin-bottom:20px;"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src='http://localhost/jualikan.id/backend/web/js/timer.js' ></script>
     <?php
       date_default_timezone_set('Asia/Jakarta');
       $date = date("Y-m-d H:i:s");
@@ -192,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initialize"></script>
-    <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
+    <script src="../backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
       getDetailOrder(<?php echo $model->order_id; ?>);
     </script>

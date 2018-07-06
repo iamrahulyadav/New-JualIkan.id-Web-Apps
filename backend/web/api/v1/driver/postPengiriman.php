@@ -1,7 +1,5 @@
 <?php
 
-  $url = "http://localhost/";
-
   $id = $_GET['id'];
   // echo $id;
   $array = json_decode($id);
@@ -26,7 +24,6 @@
       //model mengambil data driver
       $driver = driver($driverId);
       $code = rand(000000, 999999);
-      $trackId = $driver['driver_track_id'];
       $phone_id = $driver['driver_device_id'];
       $payment = $jarak * 600 / 1000;
 
@@ -50,7 +47,7 @@
                   '$order_id',
                   '$koperasiId',
                   '$driverId',
-                  '$trackId',
+                  0,
                   '$date',
                   '$date',
                   '$waktu',
@@ -58,9 +55,7 @@
                   '$payment',
                   0
               )";
-
-              echo $sql;
-
+     
       $connect->query($sql);
       $delivery_id = $connect->insert_id;
       postNotification(count($arrayOrderId), $driverId, $delivery_id, $phone_id);
@@ -82,6 +77,7 @@
   function driver($id){
       include '../../connect.php';
       $sql = "SELECT * FROM user_driver WHERE driver_id = '$id'";
+//       echo $sql;
       $result = $connect->query($sql);
       return $result->fetch_assoc();
   }
@@ -144,12 +140,7 @@
                 '$level',
                 '$value'
               )";
-
-      if ($connect->query($sql)) {
-          echo "sukses";
-      }else {
-          echo "gagal";
-      }
+      $connect->query($sql);
   }
 
 ?>
