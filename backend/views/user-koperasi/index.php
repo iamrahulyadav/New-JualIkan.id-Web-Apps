@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Tambah Koperasi', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <div id="map_canvas" class="mapping" style=" margin-bottom:20px;"></div>
+    <div id="map_canvas" class="mapping" style=" margin-bottom:20px;height:320px;"></div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -138,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initMap"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
+    <script src="http://ishom.jagopesan.com/jualikan.id/backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
       getKoperasi();
     </script>

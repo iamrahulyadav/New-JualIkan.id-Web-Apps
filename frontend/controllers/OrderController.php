@@ -201,6 +201,14 @@ class OrderController extends Controller
             'model' => $model,
         ]);
     }
+  
+  public function actionExample()
+    {
+        $model = Order::find()->All();
+        return $this->render('example', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Creates a new Order model.

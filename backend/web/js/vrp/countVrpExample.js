@@ -46,7 +46,7 @@ function getOrder(koperasi_id, koperasi_image, koperasi_name, koperasi_address, 
     type  : "GET",
     data  : "",
     // url   : "http://localhost/jualikan.id/backend/web/api/getExampleOrderData.php?id=" + koperasi_id,
-    url   : server + "jualikan.id/backend/web/api/getOrderDataNew.php?id=" + koperasi_id,
+    url   : server + "jualikan.id/backend/web/api/getOrderExampleNew.php?id=" + koperasi_id,
 //     url   : server + "jualikan.id/backend/web/api/getOrderData.php?id=" + koperasi_id,
     success : function(result){
           var resultObj = JSON.parse(result);
@@ -678,7 +678,9 @@ function countVRPByDistance(){
                             var cDis = arrayDistance[index][j].distance;
                             var cDur = arrayDistance[index][j].duration;
                             //pengecekan apakah rute tersebut rute terdekat ?
+                            
                             if (dis > cDis && (total_time + cDur) < arrayLocation[j].selisih) {
+                                console.log("Check total_time : " + (total_time + cDur) + " | " + arrayLocation[j].selisih);
                                 dis = cDis;
                                 dur = cDur;
                                 searchIndex = j;
@@ -1779,6 +1781,7 @@ function countVRPWeight(){
 //                                 break;
 //                             }
                             if (beratDriver >= arrayLocation[j].weight && (total_time + cDur) < arrayLocation[j].selisih) {
+                                console.log("Check total_time : " + (total_time + cDur) + " | " + arrayLocation[j].selisih);
                                 dis = cDis;
                                 dur = cDur;
                                 searchIndex = j;

@@ -74,7 +74,7 @@ function getAfterExampleOrder(image, name, address, lat, lng){
   $.ajax({
     type  : "GET",
     data  : "",
-    url   : "http://localhost/jualikan.id/backend/web/api/getExampleOrder.php",
+    url   : "http://ishom.jagopesan.com/jualikan.id/backend/web/api/getExampleOrder.php",
     success : function(result){
       var resultObj = JSON.parse(result);
       $.each(resultObj, function(key, value){
@@ -123,8 +123,8 @@ function initializeOrderMapsAfter() {
   var bounds = new google.maps.LatLngBounds();
 
   // Loop through our array of markers & place each one on the map
-  var imageGreenOrder = "http://localhost/jualikan.id/frontend/web/img/order_green_marker.png";
-  var storeMarkerImage = "http://localhost/jualikan.id/frontend/web/img/icon_company.png";
+  var imageGreenOrder = "http://ishom.jagopesan.com/jualikan.id/frontend/web/img/order_green_marker.png";
+  var storeMarkerImage = "http://ishom.jagopesan.com/jualikan.id/frontend/web/img/icon_company.png";
   // console.log(image);
 
   var x = 0, y = 0, z = 0;
@@ -191,8 +191,8 @@ function initializeOrderMapsAfter() {
 
               console.log(color);
 
-              getRouteBefore(storeMarker, markers[x], color);
-              getRoutePulangBefore(markers[x], storeMarker, color);
+//               getRouteBefore(storeMarker, markers[x], color);
+//               getRoutePulangBefore(markers[x], storeMarker, color);
 
               bounds.extend(marker.position);
 
@@ -268,14 +268,14 @@ function initializeOrderMapsAfter() {
   // Allow each marker to have an info window
   google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
-          infoWindow.setContent("<div style='float:left; margin-bottom:0px;'><img src=http://localhost/jualikan.id/" + storeInformation[0] + " style='width:52px; height:52px'/></div><div style='float:right; margin-left:8px; margin-bottom:0px;'><h4 style='margin-top:0px;'><b>" + storeInformation[1] +"</b></h4><p style='margin-top:-10px;'>" + storeInformation[2] + "</p></div>");
+          infoWindow.setContent("<div style='float:left; margin-bottom:0px;'><img src=http://ishom.jagopesan.com/jualikan.id/" + storeInformation[0] + " style='width:52px; height:52px'/></div><div style='float:right; margin-left:8px; margin-bottom:0px;'><h4 style='margin-top:0px;'><b>" + storeInformation[1] +"</b></h4><p style='margin-top:-10px;'>" + storeInformation[2] + "</p></div>");
           infoWindow.open(map_asu, marker);
       }
   })(marker, i));
 
   google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
-          infoWindow.setContent("<div style='float:left; margin-bottom:0px;'><img src=http://localhost/jualikan.id/" + storeInformation[0] + " style='width:52px; height:52px'/></div><div style='float:right; margin-left:8px; margin-bottom:0px;'><h4 style='margin-top:0px;'><b>" + storeInformation[1] +"</b></h4><p style='margin-top:-10px;'>" + storeInformation[2] + "</p></div>");
+          infoWindow.setContent("<div style='float:left; margin-bottom:0px;'><img src=http://ishom.jagopesan.com/jualikan.id/" + storeInformation[0] + " style='width:52px; height:52px'/></div><div style='float:right; margin-left:8px; margin-bottom:0px;'><h4 style='margin-top:0px;'><b>" + storeInformation[1] +"</b></h4><p style='margin-top:-10px;'>" + storeInformation[2] + "</p></div>");
           infoWindow.open(map_count, marker2);
       }
   })(marker, i));

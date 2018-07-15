@@ -51,7 +51,7 @@ class UserKoperasiController extends Controller
     public function actionBaru()
     {
         $query = UserKoperasi::find()->where(['koperasi_status' => 0]);
-        $count = count($query);
+        $count = $query->count();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'totalCount' => $count,

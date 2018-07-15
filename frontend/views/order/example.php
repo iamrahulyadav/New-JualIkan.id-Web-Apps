@@ -5,7 +5,7 @@ $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->iden
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initialize"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- <script src="http://localhost/jualikan.id/backend/web/js/setMapsnCountVRP.js" ></script> -->
-<script src="http://ishom.jagopesan.com/jualikan.id/backend/web/js/vrp/countVrpExample.js" ></script>
+<script src="http://ishom.jagopesan.com/jualikan.id/backend/web/js/setAfterVRPMap.js" ></script>
 <!-- <script src="http://localhost/jualikan.id/backend/web/js/setBeforeVRPMap.js" ></script> -->
 
 <style>
@@ -31,7 +31,7 @@ h3 {
 <script type="text/javascript">
   // getExampleOrder("<?php echo $object->kopreasi_image ?>", "<?php echo $object->koperasi_name ?>", "<?php echo $object->koperasi_address ?>", "<?php echo $object->koperasi_lat ?>", "<?php echo $object->koperasi_lng ?>");
   // getBeforeExampleOrder("<?php echo $object->kopreasi_image ?>", "<?php echo $object->koperasi_name ?>", "<?php echo $object->koperasi_address ?>", "<?php echo $object->koperasi_lat ?>", "<?php echo $object->koperasi_lng ?>");
-  getOrder("<?php echo $object->koperasi_id ?>","<?php echo $object->kopreasi_image ?>", "<?php echo $object->koperasi_name ?>", "<?php echo $object->koperasi_address ?>", "<?php echo $object->koperasi_lat ?>", "<?php echo $object->koperasi_lng ?>");
+  getAfterExampleOrder("<?php echo $object->kopreasi_image ?>", "<?php echo $object->koperasi_name ?>", "<?php echo $object->koperasi_address ?>", "<?php echo $object->koperasi_lat ?>", "<?php echo $object->koperasi_lng ?>");
 </script>
 
 <?php
@@ -39,7 +39,8 @@ $this->title = 'VRP Route Counting';
 ?>
 
 <div style="margin-top:-20px;">
-    <div id="titlepesanan"></div>
+    <div id="map_before" style="width:200px; height:200px;"></div>
+  <div id="map_result" style="width:200px; height:200px;"></div>
     <div id="pesanan"></div>
 
     <div id="titledriver"></div>

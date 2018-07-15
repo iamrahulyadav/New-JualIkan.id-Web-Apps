@@ -111,6 +111,8 @@
     echo json_encode($response, JSON_PRETTY_PRINT);
      
     function potong_saldo($id_user, $biaya){
+        include '../connect.php';
+
         $sqlUser = "SELECT * FROM user_pengguna WHERE user_id = '$id_user'";
         $result = $connect->query($sqlUser);
         $user = $result->fetch_assoc();

@@ -6,7 +6,7 @@
     if (isset($_POST['order_id'])) {
 
         $order_id = $_POST['order_id'];
-        $sql = "SELECT * FROM `order` WHERE `order_id` = '$order_id'";
+        $sql = "SELECT `order`.*, delivery_time.* FROM `order` as `order`, delivery_time as delivery_time WHERE delivery_time.delivery_time_id = `order`.order_delivery_time_id and `order`.order_id = '$order_id'";
         $result = $connect->query($sql);
 
         $orderObj = array();
@@ -50,6 +50,10 @@
         $locationInformation['address'] = $row['order_location_adress'];
         $locationInformation['lat'] = $row['order_location_lat'];
         $locationInformation['lng'] = $row['order_location_lng'];
+      
+        $time_delivery['id'] = $row['delivery_time_id'];
+        $time_delivery['start'] = $row['delivery_time_start'];
+        $time_delivery['end'] = $row['delivery_time_end'];
 
         $paymentInformation['cart'] = $totalKeranjang;
         $paymentInformation['delivery'] = (int)$row['order_delivery_payment'];
@@ -59,6 +63,7 @@
         $orderObj['cart'] = $keranjangInfo;
         $orderObj['orderLocation'] = $locationInformation;
         $orderObj['payment'] = $paymentInformation;
+        $orderObj['time'] = $time_delivery;
         $orderObj['status'] = (int)$row['order_status'];
 
         if ($orderObj['status'] == 0) {

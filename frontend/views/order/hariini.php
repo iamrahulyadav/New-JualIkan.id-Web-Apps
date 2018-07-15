@@ -245,6 +245,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script type="text/javascript"/>
         var arrayWaktu = [];
         var arrayIdWaktu = [];
+        var arrayTotal = [];
         var generate = document.getElementById("asd");
 
         function showTime(){
@@ -280,7 +281,7 @@ $this->params['breadcrumbs'][] = $this->title;
         function checkWaktu(start, end){
             var bol = false;
             for(var i = 0; i < arrayWaktu.length; i++){
-                if(arrayWaktu[i] <= end && arrayWaktu[i] >= start){
+                if((arrayWaktu[i] <= end && arrayWaktu[i] >= start) && arrayTotal[i] != 0){
                     bol = true;
                     break;
                 }
@@ -302,7 +303,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     $.each(resultObj, function(key, value){
                         console.log(value.delivery_time_start);
                         arrayWaktu.push(value.delivery_time_start);
-                        arrayIdWaktu.push(value.delivery_time_id);
+                        arrayIdWaktu.push(value.id);
+                        arrayTotal.push(value.total);
                     });
                     showTime();
                   }

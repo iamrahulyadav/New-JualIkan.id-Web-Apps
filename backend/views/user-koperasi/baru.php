@@ -31,7 +31,6 @@ $this->title = 'Kopreasi Belum Terverifikasi';
         $ObjectArray1 = ArrayHelper::map($Object1, 'kota_id', 'kota_name');
     ?>
 
-    <div id="map_canvas" class="mapping" style=" margin-bottom:20px;"></div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -108,12 +107,12 @@ $this->title = 'Kopreasi Belum Terverifikasi';
                 ],
                 'filter'=>array( 0 =>"Belum Terverifikasi", 1 =>"Aktif"),
             ],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIB9n26M5MbDXtw-Hd1pUyh8M1xJHjBI0&sensor=false&callback=initMap"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="http://localhost/jualikan.id/backend/web/js/setMaps.js" ></script>
     <script type="text/javascript">
       getKoperasiBaru();
     </script>

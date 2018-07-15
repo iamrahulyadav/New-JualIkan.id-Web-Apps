@@ -8,7 +8,7 @@
     
       $delivery = array();
 
-      $sql2 = "SELECT * FROM delivery WHERE delivery_driver_id = $idDriver AND delivery_status = 1 ORDER BY delivery_time_depart DESC";
+      $sql2 = "SELECT * FROM delivery WHERE delivery_driver_id = $idDriver AND (delivery_status = 1 OR delivery_status = 0) ORDER BY delivery_time_depart DESC";
       $result2 = $connect->query($sql2);
       while ($row2 = $result2->fetch_assoc()) {
           $last_deliver['id'] = $row2['delivery_id'];

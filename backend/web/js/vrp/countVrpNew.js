@@ -24,7 +24,7 @@ var valuebar;
 var width = 0;
 var step = 0;
 
-var colors = ["red", "blue", "orange", "purple", "blue", "yellow", "pink"];
+var colors = ["red", "green", "orange", "purple", "blue", "yellow", "pink"];
 
 //=================================== mengambil data dari api ===================================//
 function getOrder(koperasi_id, koperasi_image, koperasi_name, koperasi_address, koperasi_lat, koperasi_lng){
@@ -38,7 +38,6 @@ function getOrder(koperasi_id, koperasi_image, koperasi_name, koperasi_address, 
   data.price = 0;
   data.lat = koperasi_lat;
   data.lng = koperasi_lng;
-  data.selisih = 0;
 
   arrayLocation.push(data);
 
@@ -46,8 +45,7 @@ function getOrder(koperasi_id, koperasi_image, koperasi_name, koperasi_address, 
     type  : "GET",
     data  : "",
     // url   : "http://localhost/jualikan.id/backend/web/api/getExampleOrderData.php?id=" + koperasi_id,
-    url   : server + "jualikan.id/backend/web/api/getOrderDataNew.php?id=" + koperasi_id,
-//     url   : server + "jualikan.id/backend/web/api/getOrderData.php?id=" + koperasi_id,
+    url   : server + "jualikan.id/backend/web/api/getOrderData.php?id=" + koperasi_id,
     success : function(result){
           var resultObj = JSON.parse(result);
           $.each(resultObj.order, function(key, value){
@@ -61,8 +59,6 @@ function getOrder(koperasi_id, koperasi_image, koperasi_name, koperasi_address, 
               data.price = value.information.price;
               data.lat = value.information.lat;
               data.lng = value.information.lng;
-              data.selisih = ((parseInt(formatTime(value.information.delivery_time.end)) - parseInt(formatTime(value.information.delivery_time.start))) * 3600);
-              console.log("selisih : " + data.selisih);
 
               weightSumOrder = weightSumOrder + value.information.weight;
 
@@ -92,12 +88,6 @@ function countDistanceWithGoogleApi(){
     // console.log(arrayLocation);
     // console.log(arrayDriver);
     countDistanceY(0,0);
-}
-
-function formatTime(time){
-    var ours = time.split(":");
-    console.log(ours[0]);
-    return ours[0];
 }
 
 // menampilkan pesanan table
@@ -678,7 +668,7 @@ function countVRPByDistance(){
                             var cDis = arrayDistance[index][j].distance;
                             var cDur = arrayDistance[index][j].duration;
                             //pengecekan apakah rute tersebut rute terdekat ?
-                            if (dis > cDis && (total_time + cDur) < arrayLocation[j].selisih) {
+                            if (dis > cDis) {
                                 dis = cDis;
                                 dur = cDur;
                                 searchIndex = j;
@@ -1199,26 +1189,14 @@ function displayMapsVrp(arrayVRPDistance){
             bounds.extend(marker.position);
         }
         for (var k = 0; k < arrayVRPDistance.items[i].route_item.length; k++) {
-            console.log(k + " | " + (arrayVRPDistance.items[i].route_item.length - 1));
-            if(k == arrayVRPDistance.items[i].route_item.length - 1){
-                var renderDirections = new google.maps.DirectionsRenderer({
-                    directions: arrayVRPDistance.items[i].route_item[k].steps,
-                    map: vrMaps,
-                    polylineOptions: {
-                      strokeColor: colors[1]
-                    },
-                    suppressMarkers: true
-                });
-            }else {
-                var renderDirections = new google.maps.DirectionsRenderer({
-                    directions: arrayVRPDistance.items[i].route_item[k].steps,
-                    map: vrMaps,
-                    polylineOptions: {
-                      strokeColor: colors[0]
-                    },
-                    suppressMarkers: true
-                });
-            }
+            var renderDirections = new google.maps.DirectionsRenderer({
+                directions: arrayVRPDistance.items[i].route_item[k].steps,
+                map: vrMaps,
+                polylineOptions: {
+                  strokeColor: colors[i]
+                },
+                suppressMarkers: true
+            });
         }
     }
     vrMaps.fitBounds(bounds);
@@ -1687,26 +1665,14 @@ function displayMapsVrpAll(arrayVRPDistance, kode){
             bounds.extend(marker.position);
         }
         for (var k = 0; k < arrayVRPDistance.items[i].route_item.length; k++) {
-            console.log(k + " | " + (arrayVRPDistance.items[i].route_item.length - 1));
-            if(k == arrayVRPDistance.items[i].route_item.length - 1){
-                var renderDirections = new google.maps.DirectionsRenderer({
-                    directions: arrayVRPDistance.items[i].route_item[k].steps,
-                    map: vrMaps,
-                    polylineOptions: {
-                      strokeColor: colors[1]
-                    },
-                    suppressMarkers: true
-                });
-            }else {
-                var renderDirections = new google.maps.DirectionsRenderer({
-                    directions: arrayVRPDistance.items[i].route_item[k].steps,
-                    map: vrMaps,
-                    polylineOptions: {
-                      strokeColor: colors[0]
-                    },
-                    suppressMarkers: true
-                });
-            }
+            var renderDirections = new google.maps.DirectionsRenderer({
+                directions: arrayVRPDistance.items[i].route_item[k].steps,
+                map: vrMaps,
+                polylineOptions: {
+                  strokeColor: colors[i]
+                },
+                suppressMarkers: true
+            });
         }
     }
     vrMaps.fitBounds(bounds);
@@ -1771,14 +1737,8 @@ function countVRPWeight(){
                             //menghitung rute dari titik index ke titik index yang dicari
                             var cDis = arrayDistance[index][j].distance;
                             var cDur = arrayDistance[index][j].duration;
-                            //pengecekan apakah muatan pemesanan sudah sesuai dengan batas max driver ?
-//                             if (beratDriver >= arrayLocation[j].weight) {
-//                                 dis = cDis;
-//                                 dur = cDur;
-//                                 searchIndex = j;
-//                                 break;
-//                             }
-                            if (beratDriver >= arrayLocation[j].weight && (total_time + cDur) < arrayLocation[j].selisih) {
+                            //pengecekan apakah rute tersebut rute terdekat ?
+                            if (beratDriver >= arrayLocation[j].weight) {
                                 dis = cDis;
                                 dur = cDur;
                                 searchIndex = j;

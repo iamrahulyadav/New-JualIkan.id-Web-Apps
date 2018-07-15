@@ -28,8 +28,12 @@ $order = Order::find()
           ->andWhere(['>', 'order_date', $first_month])
           ->andWhere(['<', 'order_date', $last_month])
           ->all();
+$delivery = Delivery::find()
+          ->where(['delivery_order_koperasi_id' => $koperasiId])
+          ->andWhere(['>', 'delivery_time_depart', $first_month])
+          ->andWhere(['<', 'delivery_time_depart', $last_month])
+          ->all();
 $fish = Fish::find()->where(['fish_koperasi_id' => $koperasiId])->all();
-$delivery = Delivery::find()->where(['delivery_order_koperasi_id' => $koperasiId])->all();
 $nelayan = UserNelayan::find()->where(['nelayan_cooperative_id' => $koperasiId])->all();
 
 $driver = UserDriver::find()->where(['driver_koperasi_id' => $koperasiId])->all();
