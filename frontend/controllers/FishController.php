@@ -41,12 +41,36 @@ class FishController extends Controller
      */
     public function actionIndex()
     {
+//         $searchModel = new FishSearch();
+//         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+//         return $this->render('index', [
+//             'searchModel' => $searchModel,
+//             'dataProvider' => $dataProvider,
+//         ]);
+      
         $searchModel = new FishSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $object = UserKoperasi::find()->where(['koperasi_email' => Yii::$app->user->identity->username])->one();
+        $idKoperasi = $object->koperasi_id;
+
+        $query = new Query;
+        $query->from('fish f')
+              ->andWhere(['f.fish_koperasi_id' => $idKoperasi]);
+
+        // $query = Fish::find()->limit(10)->orderBy(['fish_id' => SORT_DESC]);
+        $count = $query->count();
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $provider,
         ]);
     }
 

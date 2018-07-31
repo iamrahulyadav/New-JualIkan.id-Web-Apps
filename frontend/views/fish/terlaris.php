@@ -69,12 +69,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "Rp. ". $data['fish_price'];
                 },
             ],
-            // [
-            //     'attribute'=>'fish_stock',
-            //     'value' => function ($data){
-            //         return $data['fish_stock']  . " ekor";
-            //     },
-            // ],
+//             [
+//                 'attribute'=>'fish_stock',
+//                 'value' => function ($data){
+//                     return $data['fish_stock']  . " ekor";
+//                 },
+//             ],
             [
                 'attribute'=>'Rating',
                 'format' => 'html',

@@ -59,7 +59,6 @@ class DeliveryTimeController extends Controller
         ]);
 
         $searchModel = new DeliveryTimeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

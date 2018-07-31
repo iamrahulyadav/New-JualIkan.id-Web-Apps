@@ -45,7 +45,7 @@
 
         if ($id != 0) {
           # code...
-          $sql3 = "SELECT * FROM `order` WHERE order_koperasi_location_id = '$id' and order_date like '$date' and order_status = 5";
+          $sql3 = "SELECT * FROM `order` WHERE order_koperasi_location_id = '$id' and order_date LIKE '%{$date}%' and order_status = 5";
 
         }else {
           $sql3 = "SELECT * FROM `order` WHERE order_date like '$date' and order_status = 5";

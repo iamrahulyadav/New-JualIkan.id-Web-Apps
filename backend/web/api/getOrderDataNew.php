@@ -21,6 +21,7 @@
   $resultLocation = array();
 
   checkOrder($id);
+  checkOrderDate($id);
 
   $sql1 = "SELECT user_driver.*
             FROM user_driver as user_driver
@@ -87,6 +88,19 @@
       $time_min = "00:00:00";  
       
       $sql = "SELECT delivery_time.*, `order`.*, user_pengguna.* FROM `order` as `order`, delivery_time as delivery_time, user_pengguna as user_pengguna WHERE user_pengguna.user_id = `order`.order_user_id and `order`.order_koperasi_location_id = $id and delivery_time.delivery_time_id = `order`.order_delivery_time_id and `order`.order_date like '%$date%' and delivery_time.delivery_time_id = `order`.order_delivery_time_id and delivery_time.delivery_time_start between '$time_min' and '$time_max' and `order`.order_status = 0";
+      $queryResult = $connect->query($sql);
+      while($result = $queryResult->fetch_assoc()){
+           setexpired($result['order_id']);
+      }
+  }
+
+  function checkOrderDate($id){
+      include 'connect.php';
+    
+      date_default_timezone_set('Asia/Jakarta');
+      $date = date('Y-m-d');
+      
+      $sql = "SELECT * FROM `order` WHERE `order`.order_date < '$date' and `order`.order_status = 0";
       $queryResult = $connect->query($sql);
       while($result = $queryResult->fetch_assoc()){
            setexpired($result['order_id']);
